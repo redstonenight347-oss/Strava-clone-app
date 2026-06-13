@@ -1,0 +1,15 @@
+# dependencies
+node_modules
+
+# pnpm
+.pnpm-store
+
+# env files
+.env
+.env.local
+
+# logs
+*.log
+
+# OS junk
+.DS_Store
