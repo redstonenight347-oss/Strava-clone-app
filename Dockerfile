@@ -7,7 +7,7 @@ RUN npm install -g pnpm
 
 # Copy manifests first (layer-cache friendly)
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
-COPY web/package.json ./web/
+COPY apps/web/package.json ./apps/web/
 COPY packages/db/package.json ./packages/db/
 COPY packages/validation/package.json ./packages/validation/
 
@@ -22,7 +22,7 @@ RUN npm install -g pnpm
 
 # Copy installed node_modules from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/web/node_modules ./web/node_modules
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 
 # Copy full source
 COPY . .
@@ -42,10 +42,10 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-COPY --from=builder /app/web/.next/standalone ./
-COPY --from=builder /app/web/.next/static ./web/.next/static
+COPY --from=builder /app/apps/web/.next/standalone ./
+COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
 
 # ← public line removed, no public folder exists
 EXPOSE 3000
 
-CMD ["node", "web/server.js"]
+CMD ["node", "apps/web/server.js"]

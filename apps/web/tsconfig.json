@@ -18,8 +18,14 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@repo/db": ["../../packages/db/src"],
+      "@repo/db/*": ["../../packages/db/src/*"],
+      "@repo/validation": ["../../packages/validation/src"],
+      "@repo/validation/*": ["../../packages/validation/src/*"]
     }
   },
   "include": [

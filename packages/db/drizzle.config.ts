@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 config({
   path: path.resolve(
     __dirname,
-    "../../web/.env.local"
+    "../../apps/web/.env.local"
   ),
   quiet: true,  //Makes the connection to db slient and give no output
 });
