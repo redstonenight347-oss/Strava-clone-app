@@ -1,6 +1,6 @@
 import { CreateUserSchema } from "@repo/validation"
-import { db } from "@repo/db";
-import { users } from "@repo/db";
+import { Signup, Login } from "@repo/db";
+
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -9,17 +9,18 @@ export async function POST(req: Request) {
 
     const validData = CreateUserSchema.safeParse(body)
     if (!validData.success) {
-      return Response.json({ errors: validData.error.flatten() }, { status: 400 });
+      return Response.json({ errors: "validData.error" }, { status: 400 });
     }
 
-    await db.insert(users).values({
-      name: validData.data.name,
-      email: validData.data.email,
-      password: validData.data.password
-    });
+    const userExists = await Login(body.email)
+
+    if(!userExists || userExists.length === 0){
+      await Signup(body)
+    }
 
     return Response.json({
       success: true,
+      user: userExists
     });
   } catch (err) {
     console.error(err);

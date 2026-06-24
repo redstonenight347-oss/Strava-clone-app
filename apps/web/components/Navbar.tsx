@@ -29,8 +29,8 @@ export default function Navbar() {
         </div>
 
         <Link
-          href="/signup"
-          className="py-0.5 px-2 text-2xl border-2 text-stravaorange border-stravaorange rounded-md cursor-pointer font-medium">Log In</Link>
+          href="/auth"
+          className="py-0.5 px-2 text-2xl border-2 text-stravaorange border-stravaorange rounded-md cursor-pointer font-medium">Join</Link>
       </div>
       
       
