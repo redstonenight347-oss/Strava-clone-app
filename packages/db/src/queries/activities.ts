@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm"
 import { db } from "../db"
-import { users, activities } from "../schema"
+import { activities } from "../schema"
 
 export async function getActivitiesByUser(userId: number) {
   const UserActivities = await db

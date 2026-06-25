@@ -1,12 +1,11 @@
-
+import { ActivityType } from "@repo/types"
 import Image from "next/image"
-import { OverviewType } from "@/app/dashboard/page"
 
-type ActivityCardType = {
-  overview: OverviewType[]
+type ActivityProp = {
+  activities: ActivityType,
 }
 
-export default function ActivityCard({overview}: ActivityCardType) {
+export default function ActivityCard({ activities }: ActivityProp) {
 
   return (
     <div className="mt-8 p-4 m-auto w-[90%] md:w-[60%] lg:w-[35%] bg-amber-200 rounded-md">
@@ -27,14 +26,12 @@ export default function ActivityCard({overview}: ActivityCardType) {
 
       <h1 className="mt-4 text-2xl font-semibold">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
       <div className="mt-2 flex gap-8">
-        {overview.map((o) => {
-          return (
-            <div key={o.id}> 
-              <p>{o.name}</p>
-              <h2 className="text-2xl font-semibold">{o.value}</h2>
-            </div>
-          )
-        })}
+
+        <div key={activities.activityId}>
+          <p>{activities.type}</p>
+          <h2 className="text-2xl font-semibold">{activities.distance}</h2>
+        </div>
+
       </div>
 
 

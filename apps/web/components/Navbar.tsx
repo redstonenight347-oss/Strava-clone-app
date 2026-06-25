@@ -1,5 +1,6 @@
 "use client"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useState } from "react"
 
 type MenuType = {
@@ -7,9 +8,14 @@ type MenuType = {
   href: string
 }
 
+// Add paths to show which are all pages getting the join button
+const showPathName = ['/']
 
 export default function Navbar() {
+  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
+
+  const showJoinBtn = showPathName.includes(pathname)
 
   return (
     <nav className="px-4 w-full h-18 bg-amber-100 flex items-center justify-between lg:px-6">
@@ -28,9 +34,12 @@ export default function Navbar() {
           <NavContents />
         </div>
 
-        <Link
-          href="/auth"
-          className="py-0.5 px-2 text-2xl border-2 text-stravaorange border-stravaorange rounded-md cursor-pointer font-medium">Join</Link>
+        {showJoinBtn && 
+          <Link
+            href="/auth"
+            className="py-0.5 px-2 text-2xl border-2 text-stravaorange border-stravaorange rounded-md cursor-pointer font-medium">Join</Link>
+
+        }
       </div>
       
       
