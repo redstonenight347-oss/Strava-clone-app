@@ -1,19 +1,13 @@
-import ActivityCard from "@/components/ActivityCard"
+import ActivityFeed from "@/components/ActivityFeed"
 import { getActivitiesByUser } from "@repo/db"
-import { ActivityType } from "@repo/types"
 //TODO: create a root types then import it from there
 
 
 export default async function Dashboard() {
   try {
-    const activities = await getActivitiesByUser(1)
+    const initialActivities = await getActivitiesByUser(1, 10, 0)
 
-    console.log(activities)
-    return (
-      <div>
-        {activities.map((a: ActivityType) => (<ActivityCard key={a.activityId} activities={a} />))}
-      </div>
-    )
+    return <ActivityFeed initialActivities={initialActivities} />
   }
   catch (err) {
     console.log(err)
