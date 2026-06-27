@@ -11,8 +11,9 @@
     "dbp": "drizzle-kit push"
   },
   "dependencies": {
-    "drizzle-orm": "^0.45.2",
+    "better-auth": "^1.6.21",
     "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
     "pg": "^8.21.0"
   },
   "devDependencies": {
