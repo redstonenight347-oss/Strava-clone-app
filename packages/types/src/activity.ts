@@ -1,7 +1,7 @@
 
 export type ActivityType = {
     activityId: number;
-    userId: number | null;
+    userId: string | null;
     type: string;
     title: string | null;
     description: string | null;

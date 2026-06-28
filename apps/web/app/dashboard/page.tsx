@@ -10,9 +10,10 @@ export default async function Dashboard() {
   const session = await auth.api.getSession({
     headers: await headers()
   })
+  const userId = session?.user.id
 
   try {
-    const initialActivities = await getActivitiesByUser(1, 5, 0)
+    const initialActivities = await getActivitiesByUser(session?.user.id, 5, 0)
 
     return (
       <div>
@@ -22,7 +23,7 @@ export default async function Dashboard() {
           className="m-4 px-6 py-4 bg-stravaorange text-white text-xl rounded-xl"
           >Upload Activitiy</Link>
         </div>
-        <ActivityFeed initialActivities={initialActivities} />
+        <ActivityFeed initialActivities={initialActivities} userId={userId} />
       </div>
 
     )

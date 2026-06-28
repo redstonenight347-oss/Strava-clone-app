@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm"
 import { db } from "../db"
 import { activities } from "../schema"
 
-export async function getActivitiesByUser(userId: number, limit = 5, offset = 0) {
+export async function getActivitiesByUser(userId: any, limit = 5, offset = 0) {
   const UserActivities = await db
   .select()
   .from(activities)

@@ -3,8 +3,12 @@
 import { ActivityType } from "@repo/types"
 import { useEffect, useRef, useState } from "react"
 import ActivityCard from "./ActivityCard"
+import { auth } from "@/lib/auth"
+import { headers } from "next/headers"
 
-export default function ActivityFeed({ initialActivities }: { initialActivities: ActivityType[] }) {
+export default function ActivityFeed({ initialActivities, userId }: { 
+  initialActivities: ActivityType[],
+  userId: string | undefined }) {
   const [activities, setActivities] = useState(initialActivities)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
@@ -30,7 +34,7 @@ export default function ActivityFeed({ initialActivities }: { initialActivities:
 
   async function fetchMore() {
     setLoading(true)
-    const res = await fetch(`/api/activities?userId=1&page=${page}&limit=10`)
+    const res = await fetch(`/api/activities?userId=${userId}&page=${page}&limit=5`)
     const data: ActivityType[] = await res.json()
 
     if (data.length === 0) {

@@ -39,7 +39,7 @@ export default function ActivityCard({ activities }: ActivityProp) {
         {
           stats.map((s) => {
           return (
-            <div key={activities.activityId}>
+            <div key={s.value}>
               <p>{s.name}</p>
               <h2 className="text-2xl font-semibold">{s.value}</h2>
             </div>
