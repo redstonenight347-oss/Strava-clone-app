@@ -81,7 +81,7 @@ export default function AuthPage() {
           </button>
         </div>
 
-        {/* OAuth placeholder — wire up when ready */}
+        {/* OAuth placeholder */}
         <div className="w-full h-12 border rounded flex items-center justify-center text-sm text-gray-400">
           OAuth coming soon
         </div>
@@ -95,7 +95,7 @@ export default function AuthPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          {/* Name — only shown on sign up */}
+          
           {tab === "signup" && (
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium" htmlFor="name">Name</label>

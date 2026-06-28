@@ -15,8 +15,8 @@ config({
   quiet: true,  //Makes the connection to db slient and give no output
 });
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL missing");
+if (!process.env.DATABASE_URL_DIRECT) {
+  throw new Error("DATABASE_URL_DIRECT missing");
 }
 
 export default defineConfig({
@@ -24,6 +24,6 @@ export default defineConfig({
   out: "./drizzle",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL!,
+    url: process.env.DATABASE_URL_DIRECT!,
   },
 });

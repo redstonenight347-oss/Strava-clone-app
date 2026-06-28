@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1781427124887,
-      "tag": "0000_clean_iron_monger",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1781431683377,
-      "tag": "0001_cuddly_unicorn",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1781435003082,
-      "tag": "0002_ambitious_jigsaw",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1781691638281,
-      "tag": "0003_amused_kinsey_walden",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1782292733337,
-      "tag": "0004_sharp_ultragirl",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1782556857665,
-      "tag": "0005_reflective_blur",
+      "when": 1782644399361,
+      "tag": "0000_powerful_mariko_yashida",
       "breakpoints": true
     }
   ]

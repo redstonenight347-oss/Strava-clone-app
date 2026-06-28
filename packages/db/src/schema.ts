@@ -1,15 +1,9 @@
 import { pgTable, text, serial, timestamp, integer, boolean } from "drizzle-orm/pg-core"
 
-export const users = pgTable("users", {
-  userId: serial("user_id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  createdAt: timestamp("created_at").defaultNow()
-})
 
 export const activities = pgTable("activities", {
   activityId: serial("activity_id").primaryKey(),
-  userId: integer("user_id").references(() => users.userId),
+  userId: text("user_id").references(() => user.id),
   type: text("type").notNull(),
   title: text("title"),
   description: text("description"),

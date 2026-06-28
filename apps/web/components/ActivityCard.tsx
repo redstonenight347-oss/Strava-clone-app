@@ -6,6 +6,16 @@ type ActivityProp = {
 }
 
 export default function ActivityCard({ activities }: ActivityProp) {
+  const stats: {name: string, value: number}[] = [{
+    name: "Distance",
+    value: activities.distance
+  }, {
+    name: "Time",
+    value: activities.duration
+  }, {
+    name: "Elev Gain",
+    value: 5
+  }]
 
   return (
     <div className="mt-8 p-4 m-auto w-[90%] md:w-[60%] lg:w-[35%] bg-amber-200 rounded-md">
@@ -26,12 +36,16 @@ export default function ActivityCard({ activities }: ActivityProp) {
 
       <h1 className="mt-4 text-2xl font-semibold">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
       <div className="mt-2 flex gap-8">
-
-        <div key={activities.activityId}>
-          <p>{activities.type}</p>
-          <h2 className="text-2xl font-semibold">{activities.distance}</h2>
-        </div>
-
+        {
+          stats.map((s) => {
+          return (
+            <div key={activities.activityId}>
+              <p>{s.name}</p>
+              <h2 className="text-2xl font-semibold">{s.value}</h2>
+            </div>
+          )
+          })
+        }
       </div>
 
 
