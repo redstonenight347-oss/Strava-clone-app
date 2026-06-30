@@ -8,8 +8,10 @@ export default function Upload({
 }>) {
 
   return (
-    <div className="flex justify-center gap-12">
-      <UploadButton />
+    <div className="m-6 flex justify-center gap-12">
+      <div className="self-start">
+        <UploadButton />
+      </div>
       {children}
     </div>
   )

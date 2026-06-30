@@ -3,8 +3,6 @@
 import { ActivityType } from "@repo/types"
 import { useEffect, useRef, useState } from "react"
 import ActivityCard from "./ActivityCard"
-import { auth } from "@/lib/auth"
-import { headers } from "next/headers"
 
 export default function ActivityFeed({ initialActivities, userId }: { 
   initialActivities: ActivityType[],

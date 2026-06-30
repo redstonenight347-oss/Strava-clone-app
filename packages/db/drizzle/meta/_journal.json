@@ -8,6 +8,13 @@
       "when": 1782644399361,
       "tag": "0000_powerful_mariko_yashida",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782815209963,
+      "tag": "0001_chemical_paibok",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, integer, boolean } from "drizzle-orm/pg-core"
+import { pgTable, text, serial, timestamp, integer, boolean, date, time } from "drizzle-orm/pg-core"
 
 
 export const activities = pgTable("activities", {
@@ -9,6 +9,9 @@ export const activities = pgTable("activities", {
   description: text("description"),
   distance: integer("distance").notNull(),
   duration: integer("duration").notNull(),
+  elevation: integer("elevation"),
+  date: date("date").notNull(),
+  time: time("time").notNull(),
   createdAt: timestamp("created_at").defaultNow()
 })
 

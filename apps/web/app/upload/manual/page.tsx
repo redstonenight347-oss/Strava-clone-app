@@ -11,7 +11,7 @@ const SPORTS = [
 export default function Manual() {
   const [data, setData] = useState({
     distance: 0,
-    duration: { hr: 0, min: 1, sec: 0 },
+    duration: { hr: 1, min: 0, sec: 0 },
     elev: 0,
     type: "Run",
     date: new Date().toISOString().slice(0, 10),
@@ -20,12 +20,22 @@ export default function Manual() {
     description: "",
   })
 
-  const [distanceUnit, setDistanceUnit] = useState<"kilometers" | "miles">("kilometers")
-  const [elevUnit, setElevUnit] = useState<"meters" | "feet">("meters")
+
   // const [selectedTags, setSelectedTags] = useState<string[]>([])
+
+  const [metaData, setMetaData] = useState<{
+    distanceUnit: "kilometers" | "miles"
+    elevUnit: "meters" | "feet"
+  }>({
+    distanceUnit: "kilometers",
+    elevUnit: "meters",
+  })
 
   const updateField = (field: string, value: unknown) =>
     setData(prev => ({ ...prev, [field]: value }))
+
+  const updateMetaData = (field: keyof typeof metaData, value: string) =>
+    setMetaData(prev => ({ ...prev, [field]: value }))
 
   const updateDuration = (key: "hr" | "min" | "sec", value: number) =>
     setData(prev => ({ ...prev, duration: { ...prev.duration, [key]: value } }))
@@ -35,11 +45,32 @@ export default function Manual() {
   //     prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
   //   )
 
+  const submitHandler = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      const res = await fetch("/api/activities", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ data: data, metaData: metaData })
+      })
+
+      const resData = await res.json()
+
+      console.log(resData)
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div className="w-full max-w-4xl px-4 py-6">
       <h1 className="text-4xl font-bold text-gray-900 mb-6">Manual Entry</h1>
 
-      <form onSubmit={e => e.preventDefault()} className="space-y-0">
+      <form onSubmit={submitHandler} autoComplete="off" className="space-y-0">
 
         {/* Row 1: Distance, Duration, Elevation */}
         <div className="flex flex-wrap gap-8 pb-6 border-b border-gray-200">
@@ -58,8 +89,8 @@ export default function Manual() {
               />
               <div className="h-full w-px bg-gray-200" />
               <select
-                value={distanceUnit}
-                onChange={e => setDistanceUnit(e.target.value as "kilometers" | "miles")}
+                value={metaData.distanceUnit}
+                onChange={e => updateMetaData("distanceUnit", e.target.value)}
                 className="h-full px-2 pr-1 text-sm bg-white outline-none cursor-pointer"
               >
                 <option value="kilometers">kilometers</option>
@@ -119,8 +150,8 @@ export default function Manual() {
               />
               <div className="h-full w-px bg-gray-200" />
               <select
-                value={elevUnit}
-                onChange={e => setElevUnit(e.target.value as "meters" | "feet")}
+                value={metaData.elevUnit}
+                onChange={e => updateMetaData("elevUnit", e.target.value)}
                 className="h-full px-2 pr-1 text-sm bg-white outline-none cursor-pointer"
               >
                 <option value="meters">meters</option>
@@ -221,6 +252,18 @@ export default function Manual() {
           </div>
         </div> */}
 
+        {/* Submit button */}
+        <div className="pt-6">
+          <button
+            type="submit"
+            className="px-8 py-2.5 bg-stravaorange text-white text-sm font-semibold rounded-md
+              hover:brightness-90 active:scale-[0.97] transition-all duration-150
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stravaorange focus-visible:ring-offset-2
+              cursor-pointer"
+          >
+            Save Activity
+          </button>
+        </div>
       </form>
     </div>
   )
