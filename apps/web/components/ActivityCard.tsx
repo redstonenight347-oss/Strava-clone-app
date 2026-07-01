@@ -6,7 +6,7 @@ type ActivityProp = {
 }
 
 export default function ActivityCard({ activities }: ActivityProp) {
-  const stats: {name: string, value: number}[] = [{
+  const stats: {name: string, value: number | null}[] = [{
     name: "Distance",
     value: activities.distance
   }, {
@@ -14,7 +14,7 @@ export default function ActivityCard({ activities }: ActivityProp) {
     value: activities.duration
   }, {
     name: "Elev Gain",
-    value: 5
+    value: activities.elevation
   }]
 
   return (

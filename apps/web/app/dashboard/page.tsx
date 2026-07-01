@@ -3,24 +3,24 @@ import { auth } from "@/lib/auth"
 import { getActivitiesByUser } from "@repo/db"
 import { headers } from "next/headers"
 import Link from "next/link"
-//TODO: create a root types then import it from there
+import { ActivityType } from "@repo/types"
 
 
 export default async function Dashboard() {
   const session = await auth.api.getSession({
     headers: await headers()
   })
-  const userId = session?.user.id
+  const userId: string | undefined = session?.user.id
 
   try {
-    const initialActivities = await getActivitiesByUser(session?.user.id, 5, 0)
+    const initialActivities: ActivityType[] = await getActivitiesByUser(session?.user.id, 5, 0)
 
     return (
       <div>
         <div className="flex justify-end">
           <Link
-          href={"/upload"}
-          className="m-4 px-6 py-4 bg-stravaorange text-white text-xl rounded-xl"
+            href={"/upload"}
+            className="m-4 px-6 py-4 bg-stravaorange text-white text-xl rounded-xl"
           >Upload Activitiy</Link>
         </div>
         <ActivityFeed initialActivities={initialActivities} userId={userId} />
@@ -30,6 +30,7 @@ export default async function Dashboard() {
   }
   catch (err) {
     console.log(err)
+    return <div>Error loading activities</div>
   }
 
 }
