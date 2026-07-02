@@ -7,8 +7,5 @@ export type ActivityType = {
     description: string | null;
     distance: number;
     duration: number;
-    elevation: number | null;
-    date: string;
-    time: string;
     createdAt: Date | null;
 }
