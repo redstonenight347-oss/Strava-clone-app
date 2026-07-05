@@ -12,3 +12,9 @@ declare module 'react-leaflet' {
     zoom?: number;
   }
 }
+
+declare module 'react-leaflet' {
+  interface LayersControlProps {
+    position?: string;
+  }
+}
