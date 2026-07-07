@@ -205,7 +205,11 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
 
   apps/web:
     dependencies:
@@ -261,9 +265,6 @@ importers:
       tailwindcss:
         specifier: ^4
         version: 4.3.0
-      typescript:
-        specifier: ^5
-        version: 5.9.3
 
   packages/db:
     dependencies:
@@ -286,6 +287,8 @@ importers:
       drizzle-kit:
         specifier: ^0.31.10
         version: 0.31.10
+
+  packages/gpx: {}
 
   packages/types: {}
 
