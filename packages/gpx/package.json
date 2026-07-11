@@ -6,6 +6,10 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@repo/types": "workspace:*",
     "fast-xml-parser": "^5.9.3"
+  },
+  "devDependencies": {
+    "@repo/types": "workspace:*"
   }
 }

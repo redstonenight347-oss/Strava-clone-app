@@ -1,2 +1,6 @@
 export * from "./parser"
 export * from "./haversine"
+export * from "./polyline"
+export * from "./simplify"
+export * from "./stats"
+export * from "./streams"

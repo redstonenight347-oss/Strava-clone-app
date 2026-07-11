@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter web dev",
+    "dbg": "pnpm --filter db dbg",
+    "dbm": "pnpm --filter db dbm",
+    "dbp": "pnpm --filter db dbp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

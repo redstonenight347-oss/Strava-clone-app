@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, integer, boolean, date, time } from "drizzle-orm/pg-core"
+import { pgTable, text, serial, timestamp, integer, boolean, date, time, real, jsonb } from "drizzle-orm/pg-core"
 
 
 export const activities = pgTable("activities", {
@@ -9,10 +9,25 @@ export const activities = pgTable("activities", {
   description: text("description"),
   distance: integer("distance").notNull(),
   duration: integer("duration").notNull(),
-  elevation: integer("elevation"),
+  encodedPolyline: text("encoded_polyline"),
+  avgSpeedMps: real("avg_speed_mps"),
+  maxSpeedMps: real("max_speed_mps"),
+  elevationGain: integer("elevation_gain"),
+  elevationLoss: integer("elevation_loss"),
   date: date("date").notNull(),
   time: time("time").notNull(),
   createdAt: timestamp("created_at").defaultNow()
+})
+
+// Store as JSON arrays — efficient for bulk reads, no joins needed
+export const activityStreams = pgTable("activity_streams", {
+  id: serial("id").primaryKey(),
+  activityId: integer("activity_id").notNull().references(() => activities.activityId, { onDelete: "cascade" }),
+  timeData: jsonb("time_data").notNull().$type<number[]>(),
+  distanceData: jsonb("distance_data").notNull().$type<number[]>(),
+  altitudeData: jsonb("altitude_data").notNull().$type<number[]>(),
+  speedData: jsonb("speed_data").notNull().$type<number[]>(),
+  createdAt: timestamp("created_at").defaultNow(),
 })
 
 

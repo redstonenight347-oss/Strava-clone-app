@@ -15,6 +15,13 @@
       "when": 1782815209963,
       "tag": "0001_chemical_paibok",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783768680854,
+      "tag": "0002_magical_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }
