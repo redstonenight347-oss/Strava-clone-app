@@ -11,11 +11,10 @@ type CreateActivityFromGpxInput = {
   duration: number,          // seconds
   elevationGain: number,     // metres (renamed from "elevation")
   elevationLoss: number,     // metres
-  date: string,              // "2024-01-15"
-  time: string,              // "08:30:00"
   encodedPolyline: string,
-  avgSpeedMps: number,
   maxSpeedMps: number,
+  startTime: Date,
+  endTime: Date,
 }
 
 type CreateActivityStreamsInput = {
@@ -36,11 +35,10 @@ export async function CreateActivityFromGpx(data: CreateActivityFromGpxInput) {
       duration: data.duration,
       elevationGain: data.elevationGain,
       elevationLoss: data.elevationLoss,
-      date: data.date,
-      time: data.time,
       encodedPolyline: data.encodedPolyline,
-      avgSpeedMps: data.avgSpeedMps,
       maxSpeedMps: data.maxSpeedMps,
+      startTime: data.startTime,
+      endTime: data.endTime,
     })
     .returning({ activityId: activities.activityId })
 

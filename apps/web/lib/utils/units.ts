@@ -23,3 +23,9 @@ export const feetToMeters = (feet: number): number => Math.round(feet * 0.3048)
 
 export const toElevationMeters = (value: number, unit: "meters" | "feet"): number =>
   unit === "meters" ? Math.round(value) : feetToMeters(value)
+
+
+// Timestamp -> Date from separate date and time strings
+
+export const toTimestamp = (date: string, time: string): Date =>
+  new Date(`${date}T${time}:00`)

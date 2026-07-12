@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { CreateActivitySchema, MetaDataSchema } from "@repo/validation"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
-import { toMeters, durationToSeconds, toElevationMeters } from "@/lib/utils/units"
+import { toMeters, durationToSeconds, toElevationMeters, toTimestamp } from "@/lib/utils/units"
 
 export async function GET(req: NextRequest) {
   try {
@@ -52,11 +52,11 @@ export async function POST(req: NextRequest) {
       type: DataSuccess.data.type,
       title: DataSuccess.data.title,
       description: DataSuccess.data.description,
-      date: DataSuccess.data.date,
-      time: DataSuccess.data.time,
       distance: toMeters(DataSuccess.data.distance, MetaDataSuccess.data.distanceUnit),
       duration: durationToSeconds(DataSuccess.data.duration),
-      elevation: toElevationMeters(DataSuccess.data.elev, MetaDataSuccess.data.elevUnit),
+      elevationGain: toElevationMeters(DataSuccess.data.elevGain, MetaDataSuccess.data.elevUnitGain),
+      elevationLoss: toElevationMeters(DataSuccess.data.elevLoss, MetaDataSuccess.data.elevUnitLoss),
+      createdAt: toTimestamp(DataSuccess.data.date, DataSuccess.data.time)
     }
 
     await CreateActivity(dbPayload)

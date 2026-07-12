@@ -3,19 +3,33 @@ import { db } from "../db"
 import { activities } from "../schema"
 
 type CreateActivityInput = {
-  type: string
-  title: string
-  description: string
-  date: string
-  time: string
-  distance: number
-  duration: number
-  elevation: number
+  userId: string,
+  type: string,
+  title: string,
+  description: string,
+  distance: number,
+  duration: number,
+  elevationGain: number,
+  elevationLoss: number,
+  startTime?: Date,
+  endTime?: Date,
 }
 
 export async function getActivitiesByUser(userId: any, limit = 5, offset = 0) {
   const UserActivities = await db
-    .select()
+    .select({
+      activityId: activities.activityId,
+      userId: activities.userId,
+      type: activities.type,
+      title: activities.type,
+      description: activities.description,
+      distance: activities.distance,
+      duration: activities.duration,
+      encodedPolyline: activities.encodedPolyline,
+      elevationGain: activities.elevationGain,
+      elevationLoss: activities.elevationLoss,
+      createdAt: activities.createdAt,
+    })
     .from(activities)
     .where(eq(activities.userId, userId))
     .limit(limit)

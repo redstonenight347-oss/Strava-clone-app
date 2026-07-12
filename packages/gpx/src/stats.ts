@@ -6,9 +6,7 @@ export type ActivityStats = {
   totalDurationSeconds: number,
   elevationGainMeters: number,
   elevationLossMeters: number,
-  avgSpeedMps: number,
   maxSpeedMps: number,
-  avgPaceSecPerKm: number,
   startTime: Date | null,
   endTime: Date | null,
 }
@@ -21,9 +19,7 @@ export function computeStats(points: RawTrackpoint[]): ActivityStats {
       totalDurationSeconds: 0,
       elevationGainMeters: 0,
       elevationLossMeters: 0,
-      avgSpeedMps: 0,
       maxSpeedMps: 0,
-      avgPaceSecPerKm: 0,
       startTime: points[0]?.time ?? null,
       endTime: points[0]?.time ?? null,
     }
@@ -67,18 +63,13 @@ export function computeStats(points: RawTrackpoint[]): ActivityStats {
     startTime && endTime
       ? (endTime.getTime() - startTime.getTime()) / 1000
       : 0
-  const avgSpeed = totalDuration > 0 ? totalDistance / totalDuration : 0
-  // Pace in sec/km: if avg speed is 3 m/s → pace = 1000/3 = 333 sec/km ≈ 5:33/km
-  const avgPace = avgSpeed > 0 ? 1000 / avgSpeed : 0
 
   return {
     totalDistanceMeters: Math.round(totalDistance),
     totalDurationSeconds: Math.round(totalDuration),
     elevationGainMeters: Math.round(elevationGain),
     elevationLossMeters: Math.round(elevationLoss),
-    avgSpeedMps: parseFloat(avgSpeed.toFixed(3)),
     maxSpeedMps: parseFloat(maxSpeed.toFixed(3)),
-    avgPaceSecPerKm: Math.round(avgPace),
     startTime,
     endTime,
   }

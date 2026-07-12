@@ -43,11 +43,10 @@ export async function POST(req: NextRequest) {
       duration: stats.totalDurationSeconds,
       elevationGain: stats.elevationGainMeters,
       elevationLoss: stats.elevationLossMeters,
-      date: (stats.startTime ?? new Date()).toISOString().split("T")[0],
-      time: (stats.startTime ?? new Date()).toISOString().split("T")[1].slice(0, 8),
-      encodedPolyline,
-      avgSpeedMps: stats.avgSpeedMps,
       maxSpeedMps: stats.maxSpeedMps,
+      encodedPolyline,
+      startTime: (stats.startTime ?? new Date()),
+      endTime: (stats.endTime?? new Date()),
     })
 
     await CreateActivityStreams({

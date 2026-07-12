@@ -1,11 +1,11 @@
 "use client"
 
-import { ActivityType } from "@repo/types"
+import { ActivityCardType } from "@repo/types"
 import { useEffect, useRef, useState } from "react"
 import ActivityCard from "./ActivityCard"
 
 export default function ActivityFeed({ initialActivities, userId }: { 
-  initialActivities: ActivityType[],
+  initialActivities: ActivityCardType[],
   userId: string | undefined }) {
   const [activities, setActivities] = useState(initialActivities)
   const [page, setPage] = useState(1)
@@ -33,7 +33,7 @@ export default function ActivityFeed({ initialActivities, userId }: {
   async function fetchMore() {
     setLoading(true)
     const res = await fetch(`/api/activities?userId=${userId}&page=${page}&limit=5`)
-    const data: ActivityType[] = await res.json()
+    const data: ActivityCardType[] = await res.json()
 
     if (data.length === 0) {
       setHasMore(false)

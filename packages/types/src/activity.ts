@@ -1,13 +1,17 @@
 
-export type ActivityType = {
-    activityId: number;
-    userId: string | null;
-    type: string;
-    title: string | null;
-    description: string | null;
-    distance: number;
-    duration: number;
-    createdAt: Date | null;
+export type ActivityCardType = {
+    activityId: number,
+    userId: string | null,
+    type: string,
+    title: string | null,
+    description: string | null,
+    distance: number,
+    duration: number,
+    encodedPolyline: string,
+    elevationGain: number | null,
+    elevationLoss: number | null,
+    date: Date,
+    time: unknown,
 }
 
 export type ActivityStreams = {

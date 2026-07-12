@@ -12,7 +12,8 @@ export default function Manual() {
   const [data, setData] = useState({
     distance: 0,
     duration: { hr: 1, min: 0, sec: 0 },
-    elev: 0,
+    elevGain: 0,
+    elevLoss: 0,
     type: "Run",
     date: new Date().toISOString().slice(0, 10),
     time: "11:00",
@@ -25,10 +26,13 @@ export default function Manual() {
 
   const [metaData, setMetaData] = useState<{
     distanceUnit: "kilometers" | "miles"
-    elevUnit: "meters" | "feet"
+    elevUnitGain: "meters" | "feet"
+    elevUnitLoss: "meters" | "feet"
+
   }>({
     distanceUnit: "kilometers",
-    elevUnit: "meters",
+    elevUnitGain: "meters",
+    elevUnitLoss: "meters",
   })
 
   const updateField = (field: string, value: unknown) =>
@@ -141,17 +145,33 @@ export default function Manual() {
             <label className="text-xs text-gray-600">Elevation</label>
             <div className="flex items-center border border-gray-300 rounded bg-white overflow-hidden h-9">
               <input
-                id="elevation"
+                id="elevationLoss"
                 type="number"
                 min={0}
-                value={data.elev || ""}
-                onChange={e => updateField("elev", parseFloat(e.target.value))}
+                value={data.elevGain || ""}
+                onChange={e => updateField("elevGain", parseFloat(e.target.value))}
+                className="w-24 px-2 h-full text-sm outline-none text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              />
+              <input
+                id="elevationLoss"
+                type="number"
+                min={0}
+                value={data.elevLoss || ""}
+                onChange={e => updateField("elevLoss", parseFloat(e.target.value))}
                 className="w-24 px-2 h-full text-sm outline-none text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
               <div className="h-full w-px bg-gray-200" />
               <select
-                value={metaData.elevUnit}
-                onChange={e => updateMetaData("elevUnit", e.target.value)}
+                value={metaData.elevUnitGain}
+                onChange={e => updateMetaData("elevUnitGain", e.target.value)}
+                className="h-full px-2 pr-1 text-sm bg-white outline-none cursor-pointer"
+              >
+                <option value="meters">meters</option>
+                <option value="feet">feet</option>
+              </select>
+              <select
+                value={metaData.elevUnitLoss}
+                onChange={e => updateMetaData("elevUnitLoss", e.target.value)}
                 className="h-full px-2 pr-1 text-sm bg-white outline-none cursor-pointer"
               >
                 <option value="meters">meters</option>

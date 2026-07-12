@@ -1,8 +1,8 @@
-import { ActivityType } from "@repo/types"
+import { ActivityCardType } from "@repo/types"
 import Image from "next/image"
 
 type ActivityProp = {
-  activities: ActivityType,
+  activities: ActivityCardType,
 }
 
 export default function ActivityCard({ activities }: ActivityProp) {
