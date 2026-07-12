@@ -11,66 +11,103 @@ export type ActivityStats = {
   endTime: Date | null,
 }
 
+const ELEVATION_NOISE_THRESHOLD = 2 // metres — ignore changes smaller than this
 
-export function computeStats(points: RawTrackpoint[]): ActivityStats {
-  if (points.length < 2) {
-    return {
-      totalDistanceMeters: 0,
-      totalDurationSeconds: 0,
-      elevationGainMeters: 0,
-      elevationLossMeters: 0,
-      maxSpeedMps: 0,
-      startTime: points[0]?.time ?? null,
-      endTime: points[0]?.time ?? null,
-    }
-  }
+
+export function computeTotalDistance(points: RawTrackpoint[]): number {
+  if (points.length < 2) return 0
 
   let totalDistance = 0
-  let elevationGain = 0
-  let elevationLoss = 0
-  let maxSpeed = 0
+  for (let i = 1; i < points.length; i++) {
+    const prev = points[i - 1]
+    const curr = points[i]
+    totalDistance += haversineDistance(prev.lat, prev.lng, curr.lat, curr.lng)
+  }
+  return Math.round(totalDistance)
+}
 
-  const ELEVATION_NOISE_THRESHOLD = 2 // metres — ignore changes smaller than this
+
+export function computeElevation(points: RawTrackpoint[]): {
+  gainMeters: number
+  lossMeters: number
+} {
+  if (points.length < 2) return { gainMeters: 0, lossMeters: 0 }
+
+  let gain = 0
+  let loss = 0
 
   for (let i = 1; i < points.length; i++) {
     const prev = points[i - 1]
     const curr = points[i]
-    // --- Distance ---
-    const segmentDist = haversineDistance(prev.lat, prev.lng, curr.lat, curr.lng)
-    totalDistance += segmentDist
-    // --- Elevation ---
     if (prev.ele != null && curr.ele != null) {
       const eleDiff = curr.ele - prev.ele
       if (eleDiff > ELEVATION_NOISE_THRESHOLD) {
-        elevationGain += eleDiff
+        gain += eleDiff
       } else if (eleDiff < -ELEVATION_NOISE_THRESHOLD) {
-        elevationLoss += Math.abs(eleDiff)
+        loss += Math.abs(eleDiff)
       }
     }
-    // --- Speed ---
+  }
+
+  return {
+    gainMeters: Math.round(gain),
+    lossMeters: Math.round(loss),
+  }
+}
+
+
+export function computeMaxSpeed(points: RawTrackpoint[]): number {
+  if (points.length < 2) return 0
+
+  let maxSpeed = 0
+
+  for (let i = 1; i < points.length; i++) {
+    const prev = points[i - 1]
+    const curr = points[i]
     if (prev.time && curr.time) {
       const timeDiffSeconds = (curr.time.getTime() - prev.time.getTime()) / 1000
       if (timeDiffSeconds > 0) {
+        const segmentDist = haversineDistance(prev.lat, prev.lng, curr.lat, curr.lng)
         const segmentSpeed = segmentDist / timeDiffSeconds // m/s
         if (segmentSpeed > maxSpeed) maxSpeed = segmentSpeed
       }
     }
   }
 
-  const startTime = points[0].time
-  const endTime = points[points.length - 1].time
-  const totalDuration =
-    startTime && endTime
-      ? (endTime.getTime() - startTime.getTime()) / 1000
-      : 0
+  return parseFloat(maxSpeed.toFixed(3))
+}
+
+
+export function computeTimeRange(points: RawTrackpoint[]): {
+  startTime: Date | null
+  endTime: Date | null
+} {
+  if (points.length === 0) return { startTime: null, endTime: null }
+  return {
+    startTime: points[0].time ?? null,
+    endTime: points[points.length - 1].time ?? null,
+  }
+}
+
+
+export function computeDuration(points: RawTrackpoint[]): number {
+  const { startTime, endTime } = computeTimeRange(points)
+  if (!startTime || !endTime) return 0
+  return Math.round((endTime.getTime() - startTime.getTime()) / 1000)
+}
+
+
+// --- Convenience wrapper (preserves original API) ---
+
+export function computeStats(points: RawTrackpoint[]): ActivityStats {
+  const elevation = computeElevation(points)
 
   return {
-    totalDistanceMeters: Math.round(totalDistance),
-    totalDurationSeconds: Math.round(totalDuration),
-    elevationGainMeters: Math.round(elevationGain),
-    elevationLossMeters: Math.round(elevationLoss),
-    maxSpeedMps: parseFloat(maxSpeed.toFixed(3)),
-    startTime,
-    endTime,
+    totalDistanceMeters: computeTotalDistance(points),
+    totalDurationSeconds: computeDuration(points),
+    elevationGainMeters: elevation.gainMeters,
+    elevationLossMeters: elevation.lossMeters,
+    maxSpeedMps: computeMaxSpeed(points),
+    ...computeTimeRange(points),
   }
 }
