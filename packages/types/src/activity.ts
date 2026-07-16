@@ -7,8 +7,8 @@ export type ActivityCardType = {
     distance: number,
     duration: number,
     encodedPolyline: string | null,
-    elevationGain: number | null,
-    elevationLoss: number | null,
+    elevationGain: number,
+    elevationLoss: number,
     createdAt: Date | null,
 }
 

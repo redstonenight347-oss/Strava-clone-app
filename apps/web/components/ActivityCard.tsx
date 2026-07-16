@@ -1,20 +1,43 @@
+"use client"
+
+import { detectMeasurementSystem, formatDistance, formatElevation, MeasurementSystem } from "@/lib/utils/unitformatter"
 import { ActivityCardType } from "@repo/types"
 import Image from "next/image"
+import { useEffect, useState } from "react"
 
 type ActivityProp = {
   activities: ActivityCardType,
 }
 
+export function useMeasurementSystem() {
+  const [system, setSystem] = useState<MeasurementSystem>("metric")
+  useEffect(() => {
+    setSystem(detectMeasurementSystem())
+  }, [])
+
+  return system;
+}
+
 export default function ActivityCard({ activities }: ActivityProp) {
-  const stats: {name: string, value: number}[] = [{
+  const system = useMeasurementSystem()
+
+  let elev = { name: "", value: 0 }
+  if (activities.elevationGain > activities.elevationLoss) {
+    elev = { name: "Elev Gain", value: activities.elevationGain }
+  } else {
+    elev = { name: "Elev Loss", value: activities.elevationLoss }
+  }
+
+  // TODO: unitformatter is temp file, please change it to @repo/units with db preference
+  const stats: { name: string, value: string }[] = [{
     name: "Distance",
-    value: activities.distance
+    value: formatDistance(activities.distance, system)
   }, {
     name: "Time",
-    value: activities.duration
+    value: activities.duration.toString()
   }, {
-    name: "Elev Gain",
-    value: 5
+    name: elev.name,
+    value: formatElevation(elev.value, system)
   }]
 
   return (
@@ -38,12 +61,12 @@ export default function ActivityCard({ activities }: ActivityProp) {
       <div className="mt-2 flex gap-8">
         {
           stats.map((s) => {
-          return (
-            <div key={s.value}>
-              <p>{s.name}</p>
-              <h2 className="text-2xl font-semibold">{s.value}</h2>
-            </div>
-          )
+            return (
+              <div key={s.value}>
+                <p>{s.name}</p>
+                <h2 className="text-2xl font-semibold">{s.value}</h2>
+              </div>
+            )
           })
         }
       </div>

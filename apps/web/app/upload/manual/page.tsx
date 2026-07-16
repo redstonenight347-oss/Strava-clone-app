@@ -32,7 +32,6 @@ export default function Manual() {
     distanceUnit: "kilometers" | "miles"
     elevUnitGain: "meters" | "feet"
     elevUnitLoss: "meters" | "feet"
-
   }>({
     distanceUnit: "kilometers",
     elevUnitGain: "meters",

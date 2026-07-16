@@ -28,6 +28,8 @@ export async function getActivitiesByUser(userId: any, limit = 5, offset = 0) {
       encodedPolyline: activities.encodedPolyline,
       elevationGain: activities.elevationGain,
       elevationLoss: activities.elevationLoss,
+      // startTime: activities.startTime,
+      // endTime: activities.endTime,
       createdAt: activities.createdAt,
     })
     .from(activities)
@@ -39,7 +41,10 @@ export async function getActivitiesByUser(userId: any, limit = 5, offset = 0) {
 }
 
 export async function CreateActivity(data: CreateActivityInput) {
-  await db
+  const res = await db
     .insert(activities)
     .values(data)
+    .returning()
+
+  return res
 }

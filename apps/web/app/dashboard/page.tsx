@@ -3,12 +3,17 @@ import { auth } from "@/lib/auth"
 import { getActivitiesByUser } from "@repo/db"
 import { headers } from "next/headers"
 import Link from "next/link"
+import { NextResponse } from "next/server"
 
 
 export default async function Dashboard() {
   const session = await auth.api.getSession({
     headers: await headers()
   })
+  if(!session) {
+    return NextResponse.redirect("/auth")
+  }
+
   const userId = session?.user.id
 
   try {

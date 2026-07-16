@@ -11,8 +11,8 @@ export const activities = pgTable("activities", {
   duration: integer("duration").notNull(),
   encodedPolyline: text("encoded_polyline"),
   maxSpeedMps: real("max_speed_mps"),
-  elevationGain: integer("elevation_gain"),
-  elevationLoss: integer("elevation_loss"),
+  elevationGain: integer("elevation_gain").notNull(),
+  elevationLoss: integer("elevation_loss").notNull(),
   startTime: timestamp("start_time"),
   endTime: timestamp("end_time"),
   createdAt: timestamp("created_at").defaultNow()

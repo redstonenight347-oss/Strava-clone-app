@@ -10,8 +10,8 @@ export const CreateActivitySchema = z.object({
   elevGain: z.number().nonnegative(),
   elevLoss: z.number().nonnegative(),
   type: z.enum(["Run", "Ride", "Swim", "Walk", "Hike", "Other"]),
-  date: z.iso.date(),
-  time: z.string().regex(/^\d{2}:\d{2}$/),
+  startTime: z.iso.date(),
+  endTime: z.iso.date(),
   title: z.string().min(1).max(100),
   description: z.string().max(1000),
 })

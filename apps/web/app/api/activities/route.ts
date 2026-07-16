@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { CreateActivitySchema, MetaDataSchema } from "@repo/validation"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
-import { toMeters, durationToSeconds, toElevationMeters, toTimestamp } from "@/lib/utils/units"
+import { distanceToMeters, durationToSeconds, elevationToMeters, toTimestamp } from "@repo/units"
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     const limit = Number(searchParams.get("limit") ?? 5)
     const offset = page * limit
     const data = await getActivitiesByUser(userId, limit, offset)
-
+console.log(data, userId)
     return NextResponse.json(data)
   }
   catch (err) {
@@ -52,16 +52,17 @@ export async function POST(req: NextRequest) {
       type: DataSuccess.data.type,
       title: DataSuccess.data.title,
       description: DataSuccess.data.description,
-      distance: toMeters(DataSuccess.data.distance, MetaDataSuccess.data.distanceUnit),
+      distance: distanceToMeters(DataSuccess.data.distance, MetaDataSuccess.data.distanceUnit),
       duration: durationToSeconds(DataSuccess.data.duration),
-      elevationGain: toElevationMeters(DataSuccess.data.elevGain, MetaDataSuccess.data.elevUnitGain),
-      elevationLoss: toElevationMeters(DataSuccess.data.elevLoss, MetaDataSuccess.data.elevUnitLoss),
-      createdAt: toTimestamp(DataSuccess.data.date, DataSuccess.data.time)
+      elevationGain: elevationToMeters(DataSuccess.data.elevGain, MetaDataSuccess.data.elevUnitGain),
+      elevationLoss: elevationToMeters(DataSuccess.data.elevLoss, MetaDataSuccess.data.elevUnitLoss),
+      startTime: DataSuccess.data.startTime ? new Date(DataSuccess.data.startTime) : undefined,
+      endTime: DataSuccess.data.endTime ? new Date(DataSuccess.data.endTime) : undefined,
     }
 
-    await CreateActivity(dbPayload)
+    const res = await CreateActivity(dbPayload)
 
-    return NextResponse.json({ success: true }, { status: 200 })
+    return NextResponse.json({ success: true, data: res }, { status: 200 })
   }
   catch (err) {
     console.error(err)
