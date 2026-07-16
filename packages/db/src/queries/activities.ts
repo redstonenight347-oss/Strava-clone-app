@@ -21,7 +21,7 @@ export async function getActivitiesByUser(userId: any, limit = 5, offset = 0) {
       activityId: activities.activityId,
       userId: activities.userId,
       type: activities.type,
-      title: activities.type,
+      title: activities.title,
       description: activities.description,
       distance: activities.distance,
       duration: activities.duration,

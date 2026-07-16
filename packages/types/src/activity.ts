@@ -1,4 +1,3 @@
-
 export type ActivityCardType = {
     activityId: number,
     userId: string | null,
@@ -7,11 +6,10 @@ export type ActivityCardType = {
     description: string | null,
     distance: number,
     duration: number,
-    encodedPolyline: string,
+    encodedPolyline: string | null,
     elevationGain: number | null,
     elevationLoss: number | null,
-    date: Date,
-    time: unknown,
+    createdAt: Date | null,
 }
 
 export type ActivityStreams = {

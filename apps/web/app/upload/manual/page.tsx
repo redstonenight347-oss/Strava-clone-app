@@ -9,14 +9,18 @@ const SPORTS = [
 // const TAGS = ["Race", "Workout", "Long Run", "Commute", "For a Cause", "Recovery", "With Kid", "With Pet", "Treadmill"]
 
 export default function Manual() {
+  const nowLocal = new Date()
+  nowLocal.setMinutes(nowLocal.getMinutes() - nowLocal.getTimezoneOffset())
+  const defaultDateTime = nowLocal.toISOString().slice(0, 16)
+
   const [data, setData] = useState({
     distance: 0,
     duration: { hr: 1, min: 0, sec: 0 },
-    elevGain: 0,
-    elevLoss: 0,
+    elevationGain: 0,
+    elevationLoss: 0,
     type: "Run",
-    date: new Date().toISOString().slice(0, 10),
-    time: "11:00",
+    startTime: defaultDateTime,
+    endTime: "",
     title: "",
     description: "",
   })
@@ -49,8 +53,7 @@ export default function Manual() {
   //     prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
   //   )
 
-  const submitHandler = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const submitHandler = async () => {
 
     try {
       const res = await fetch("/api/activities", {
@@ -74,9 +77,9 @@ export default function Manual() {
     <div className="w-full max-w-4xl px-4 py-6">
       <h1 className="text-4xl font-bold text-gray-900 mb-6">Manual Entry</h1>
 
-      <form onSubmit={submitHandler} autoComplete="off" className="space-y-0">
+      <form action={submitHandler} autoComplete="off" className="space-y-0">
 
-        {/* Row 1: Distance, Duration, Elevation */}
+        {/* Row 1: Distance, Duration */}
         <div className="flex flex-wrap gap-8 pb-6 border-b border-gray-200">
 
           {/* Distance */}
@@ -140,25 +143,17 @@ export default function Manual() {
             </div>
           </div>
 
-          {/* Elevation */}
+          {/* Elevation Gain */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs text-gray-600">Elevation</label>
+            <label className="text-xs text-gray-600">Elev Gain</label>
             <div className="flex items-center border border-gray-300 rounded bg-white overflow-hidden h-9">
               <input
-                id="elevationLoss"
+                id="elevationGain"
                 type="number"
                 min={0}
-                value={data.elevGain || ""}
-                onChange={e => updateField("elevGain", parseFloat(e.target.value))}
-                className="w-24 px-2 h-full text-sm outline-none text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-              />
-              <input
-                id="elevationLoss"
-                type="number"
-                min={0}
-                value={data.elevLoss || ""}
-                onChange={e => updateField("elevLoss", parseFloat(e.target.value))}
-                className="w-24 px-2 h-full text-sm outline-none text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                value={data.elevationGain || ""}
+                onChange={e => updateField("elevationGain", parseFloat(e.target.value))}
+                className="w-20 px-2 h-full text-sm outline-none text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
               <div className="h-full w-px bg-gray-200" />
               <select
@@ -169,6 +164,22 @@ export default function Manual() {
                 <option value="meters">meters</option>
                 <option value="feet">feet</option>
               </select>
+            </div>
+          </div>
+
+          {/* Elevation Loss */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs text-gray-600">Elev Loss</label>
+            <div className="flex items-center border border-gray-300 rounded bg-white overflow-hidden h-9">
+              <input
+                id="elevationLoss"
+                type="number"
+                min={0}
+                value={data.elevationLoss || ""}
+                onChange={e => updateField("elevationLoss", parseFloat(e.target.value))}
+                className="w-20 px-2 h-full text-sm outline-none text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              />
+              <div className="h-full w-px bg-gray-200" />
               <select
                 value={metaData.elevUnitLoss}
                 onChange={e => updateMetaData("elevUnitLoss", e.target.value)}
@@ -181,7 +192,7 @@ export default function Manual() {
           </div>
         </div>
 
-        {/* Row 2: Sport, Date & Time */}
+        {/* Row 2: Sport, Start Time, End Time */}
         <div className="flex flex-wrap gap-8 py-6 border-b border-gray-200">
 
           {/* Sport */}
@@ -201,23 +212,29 @@ export default function Manual() {
             </div>
           </div>
 
-          {/* Date & Time */}
+          {/* Start Time */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs text-gray-600">Date &amp; Time</label>
+            <label className="text-xs text-gray-600">Start Time</label>
             <div className="flex items-center border border-gray-300 rounded bg-white overflow-hidden h-9">
               <input
-                id="date"
-                type="date"
-                value={data.date}
-                onChange={e => updateField("date", e.target.value)}
+                id="startTime"
+                type="datetime-local"
+                value={data.startTime}
+                onChange={e => updateField("startTime", e.target.value)}
                 className="h-full px-2 text-sm bg-white outline-none cursor-pointer"
               />
-              <div className="h-full w-px bg-gray-200" />
+            </div>
+          </div>
+
+          {/* End Time */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs text-gray-600">End Time</label>
+            <div className="flex items-center border border-gray-300 rounded bg-white overflow-hidden h-9">
               <input
-                id="time"
-                type="time"
-                value={data.time}
-                onChange={e => updateField("time", e.target.value)}
+                id="endTime"
+                type="datetime-local"
+                value={data.endTime}
+                onChange={e => updateField("endTime", e.target.value)}
                 className="h-full px-2 text-sm bg-white outline-none cursor-pointer"
               />
             </div>

@@ -1,9 +1,8 @@
-import ActivityFeed from "@/components/ActivityFeed"
+import ActivityFeed from "@/components/ActivityFeed"  
 import { auth } from "@/lib/auth"
 import { getActivitiesByUser } from "@repo/db"
 import { headers } from "next/headers"
 import Link from "next/link"
-//TODO: create a root types then import it from there
 
 
 export default async function Dashboard() {
