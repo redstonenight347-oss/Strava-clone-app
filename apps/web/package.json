@@ -12,6 +12,7 @@
     "@repo/db": "workspace:*",
     "@repo/gpx": "workspace:*",
     "@repo/validation": "workspace:*",
+    "@repo/units": "workspace:*", 
     "better-auth": "^1.6.21",
     "leaflet": "^1.9.4",
     "next": "16.2.9",
