@@ -17,4 +17,10 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true
   },
+  socialProviders: {
+    google: {
+      clientId: process.env.CLEINT_ID as string,
+      clientSecret: process.env.CLEINT_SECRET as string,
+    }
+  }
 })
