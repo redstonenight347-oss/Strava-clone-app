@@ -4,6 +4,7 @@ import { detectMeasurementSystem, formatDistance, formatElevation, MeasurementSy
 import { ActivityCardType } from "@repo/types"
 import Image from "next/image"
 import { useEffect, useState } from "react"
+import StaticMapWrapper from "./map/StaticMapWrapper"
 
 type ActivityProp = {
   activities: ActivityCardType,
@@ -50,14 +51,14 @@ export default function ActivityCard({ activities }: ActivityProp) {
           alt="Profile"
           className="mr-3 mt-3 w-12 rounded-full" />
         <div className="mt-3 h-0 flex flex-col justify-start">
-          <h3 className="mb-0 text-lg/tight font-semibold">Username</h3>
-          <p className="mt-0 text-sm/tight">date, time and device</p>
+          <h3 className="mb-0 text-lg/tight font-semibold">UserName</h3>
+          <p className="mt-0 text-sm/tight">time and date</p>
           <p className="mt-0 text-sm/tight">location</p>
         </div>
       </div>
 
 
-      <h1 className="mt-4 text-2xl font-semibold">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
+      <h1 className="mt-4 text-2xl font-semibold">{activities.title ?? "Untitled Activity"}</h1>
       <div className="mt-2 flex gap-8">
         {
           stats.map((s) => {
@@ -72,9 +73,15 @@ export default function ActivityCard({ activities }: ActivityProp) {
       </div>
 
 
-      <div className="mt-4 w-full h-80 bg-amber-50">
-        {/* map image */}
-      </div>
+
+      {activities.encodedPolyline ? (
+        <div className="mt-4 w-full h-80 bg-amber-50 rounded-md overflow-hidden pointer-events-none">
+          <StaticMapWrapper encodedPolyline={activities.encodedPolyline} />
+        </div>
+      ) : (
+        <div className="my-8 flex items-center justify-center border border-gray-400/20">
+        </div>
+      )}
 
 
       <div className="mt-8 mb-4 flex justify-around md:justify-start gap-12">

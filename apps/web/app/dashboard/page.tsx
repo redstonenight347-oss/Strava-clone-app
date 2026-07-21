@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth"
 import { getActivitiesByUser } from "@repo/db"
 import { headers } from "next/headers"
 import Link from "next/link"
-import { NextResponse } from "next/server"
+import { redirect } from "next/navigation"
 
 
 export default async function Dashboard() {
@@ -11,7 +11,7 @@ export default async function Dashboard() {
     headers: await headers()
   })
   if(!session) {
-    return NextResponse.redirect("/auth")
+    redirect("/auth")
   }
 
   const userId = session?.user.id

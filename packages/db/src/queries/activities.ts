@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm"
+import { desc, eq } from "drizzle-orm"
 import { db } from "../db"
 import { activities } from "../schema"
 
@@ -36,6 +36,7 @@ export async function getActivitiesByUser(userId: any, limit = 5, offset = 0) {
     .where(eq(activities.userId, userId))
     .limit(limit)
     .offset(offset)
+    .orderBy(desc(activities.createdAt))
 
   return UserActivities
 }

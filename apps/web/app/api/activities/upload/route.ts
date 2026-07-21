@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const formData = await req.formData()
     const file = formData.get("file") as File | null
-    if (!file || file.name.endsWith(".gpx")) {
+    if (!file || !file.name.endsWith(".gpx")) {
       return NextResponse.json({ error: "A valild .gpx file is requried" }, { status: 400 })
     }
 

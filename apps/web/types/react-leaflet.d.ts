@@ -10,6 +10,14 @@ declare module 'react-leaflet' {
   interface MapContainerProps {
     center?: LatLngExpression;
     zoom?: number;
+    zoomControl?: boolean;
+    attributionControl?: boolean;
+    dragging?: boolean;
+    scrollWheelZoom?: boolean;
+    doubleClickZoom?: boolean;
+    touchZoom?: boolean;
+    boxZoom?: boolean;
+    keyboard?: boolean;
   }
 }
 

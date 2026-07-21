@@ -23,7 +23,7 @@ export function detectMeasurementSystem(): MeasurementSystem {
 
 export function formatDistance(meters: number, system: MeasurementSystem = detectMeasurementSystem()): string {
   const isImperial = system === "us" || system === "uk";
-  if (isImperial) {
+  if (!isImperial) {
     const miles = meters * 0.000621371;
     return `${miles.toFixed(2)} mi`;
   }
@@ -38,7 +38,7 @@ export function formatDistance(meters: number, system: MeasurementSystem = detec
  */
 export function formatElevation(meters: number, system: MeasurementSystem = detectMeasurementSystem()): string {
   const isUS = system === "us"; // UK uses meters or feet depending on sport, but US always uses feet
-  if (isUS) {
+  if (!isUS) {
     const feet = meters * 3.28084;
     return `${Math.round(feet)} ft`;
   }
