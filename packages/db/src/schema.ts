@@ -1,12 +1,24 @@
-import { pgTable, text, serial, timestamp, integer, boolean, date, time, real, jsonb } from "drizzle-orm/pg-core"
+import { pgTable, text, serial, timestamp, integer, boolean, real, jsonb, pgEnum } from "drizzle-orm/pg-core"
+
+
+export const theme = pgEnum("theme", ["system", "dark", "light"])
+
+export const distanceUnit = pgEnum("distance_unit", ["metric", "imperial"])
+
+export const elevationUnit = pgEnum("elevation_unit", ["meters", "feet"])
+
+export const weightUnit = pgEnum("weight_unit", ["kg", "lb"])
+
+export const timeFormat = pgEnum("time_format", ["12h", "24h"])
 
 
 export const activities = pgTable("activities", {
   activityId: serial("activity_id").primaryKey(),
-  userId: text("user_id").references(() => user.id),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
   type: text("type").notNull(),
   title: text("title"),
   description: text("description"),
+  location: text("location"),
   distance: integer("distance").notNull(),
   duration: integer("duration").notNull(),
   encodedPolyline: text("encoded_polyline"),
@@ -27,6 +39,17 @@ export const activityStreams = pgTable("activity_streams", {
   altitudeData: jsonb("altitude_data").notNull().$type<number[]>(),
   speedData: jsonb("speed_data").notNull().$type<number[]>(),
   createdAt: timestamp("created_at").defaultNow(),
+})
+
+
+export const userPreferences = pgTable("user_preferences", {
+  userId: text("user_id").primaryKey().references(() => user.id, { onDelete: "cascade" }),
+  theme: theme("theme").default("system").notNull(),
+  distanceUnit: distanceUnit("distance_unit").default("metric").notNull(),
+  elevationUnit: elevationUnit("elevation_unit").default("meters").notNull(),
+  weightUnit: weightUnit("weight_unit").default("kg").notNull(),
+  timeFormat: timeFormat("time_format").default("24h").notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()),
 })
 
 
