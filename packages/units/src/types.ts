@@ -1,4 +1,4 @@
-export type DistanceUnit = "kilometers" | "miles"
+export type DistanceUnit = "metric" | "imperial"
 
 export type ElevationUnit = "meters" | "feet"
 

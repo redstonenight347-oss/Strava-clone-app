@@ -1,6 +1,6 @@
 import ActivityFeed from "@/components/ActivityFeed"  
 import { auth } from "@/lib/auth"
-import { getActivitiesByUser } from "@repo/db"
+import { createUserPreferences, getActivitiesByUser, getUserPreferences } from "@repo/db"
 import { headers } from "next/headers"
 import Link from "next/link"
 import { redirect } from "next/navigation"
@@ -18,6 +18,11 @@ export default async function Dashboard() {
 
   try {
     const initialActivities = await getActivitiesByUser(session?.user.id, 5, 0)
+    let [userPreferences] = await getUserPreferences(session?.user.id)
+
+    if(!userPreferences) {
+      [userPreferences] = await createUserPreferences(session.user.id)
+    }
 
     return (
       <div>
@@ -27,7 +32,7 @@ export default async function Dashboard() {
           className="m-4 px-6 py-4 bg-stravaorange text-white text-xl rounded-xl"
           >Upload Activitiy</Link>
         </div>
-        <ActivityFeed initialActivities={initialActivities} userId={userId} />
+        <ActivityFeed initialActivities={initialActivities} userPreferences={userPreferences} userId={userId} />
       </div>
 
     )

@@ -52,6 +52,7 @@ export const userPreferences = pgTable("user_preferences", {
   updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()),
 })
 
+export type preferencesType = typeof userPreferences.$inferSelect;
 
 // Better auth tables 
 

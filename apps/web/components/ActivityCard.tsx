@@ -5,22 +5,26 @@ import { ActivityCardType } from "@repo/types"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import StaticMapWrapper from "./map/StaticMapWrapper"
+import { PreferencesType } from "@repo/types"
+import { metersToDistance, metersToElevation } from "@repo/units"
+
 
 type ActivityProp = {
   activities: ActivityCardType,
+  userPreferences: PreferencesType,
 }
 
-export function useMeasurementSystem() {
-  const [system, setSystem] = useState<MeasurementSystem>("metric")
-  useEffect(() => {
-    setSystem(detectMeasurementSystem())
-  }, [])
+// export function useMeasurementSystem() {
+//   const [system, setSystem] = useState<MeasurementSystem>("metric")
+//   useEffect(() => {
+//     setSystem(detectMeasurementSystem())
+//   }, [])
 
-  return system;
-}
+//   return system;
+// }
 
-export default function ActivityCard({ activities }: ActivityProp) {
-  const system = useMeasurementSystem()
+export default function ActivityCard({ activities, userPreferences }: ActivityProp) {
+  // const system = useMeasurementSystem()
 
   let elev = { name: "", value: 0 }
   if (activities.elevationGain > activities.elevationLoss) {
@@ -32,13 +36,13 @@ export default function ActivityCard({ activities }: ActivityProp) {
   // TODO: unitformatter is temp file, please change it to @repo/units with db preference
   const stats: { name: string, value: string }[] = [{
     name: "Distance",
-    value: formatDistance(activities.distance, system)
+    value: metersToDistance(activities.distance, userPreferences?.distanceUnit)
   }, {
     name: "Time",
     value: activities.duration.toString()
   }, {
     name: elev.name,
-    value: formatElevation(elev.value, system)
+    value: metersToElevation(elev.value, userPreferences.elevationUnit)
   }]
 
   return (

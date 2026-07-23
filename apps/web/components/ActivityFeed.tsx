@@ -2,11 +2,14 @@
 
 import { ActivityCardType } from "@repo/types"
 import { useEffect, useRef, useState } from "react"
+import type { PreferencesType } from "@repo/types"
 import ActivityCard from "./ActivityCard"
 
-export default function ActivityFeed({ initialActivities, userId }: { 
+export default function ActivityFeed({ initialActivities, userPreferences, userId }: { 
   initialActivities: ActivityCardType[],
+  userPreferences: PreferencesType,
   userId: string | undefined }) {
+  
   const [activities, setActivities] = useState(initialActivities)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
@@ -48,7 +51,7 @@ export default function ActivityFeed({ initialActivities, userId }: {
   return (
     <div>
       {activities.map((a) => (
-        <ActivityCard key={a.activityId} activities={a} />
+        <ActivityCard key={a.activityId} activities={a} userPreferences={userPreferences} />
       ))}
 
       {/* The invisible div observer */}
