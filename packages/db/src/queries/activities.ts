@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm"
 import { db } from "../db"
-import { activities } from "../schema"
+import { activities, user } from "../schema"
 
 type CreateActivityInput = {
   userId: string,
@@ -18,6 +18,7 @@ type CreateActivityInput = {
 export async function getActivitiesByUser(userId: any, limit = 5, offset = 0) {
   const UserActivities = await db
     .select({
+      userName: user.name,
       activityId: activities.activityId,
       userId: activities.userId,
       type: activities.type,
@@ -32,7 +33,8 @@ export async function getActivitiesByUser(userId: any, limit = 5, offset = 0) {
       // endTime: activities.endTime,
       createdAt: activities.createdAt,
     })
-    .from(activities)
+    .from(user)
+    .innerJoin(activities, eq(activities.userId, user.id))
     .where(eq(activities.userId, userId))
     .limit(limit)
     .offset(offset)

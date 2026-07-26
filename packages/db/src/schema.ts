@@ -27,7 +27,7 @@ export const activities = pgTable("activities", {
   elevationLoss: integer("elevation_loss").notNull(),
   startTime: timestamp("start_time"),
   endTime: timestamp("end_time"),
-  createdAt: timestamp("created_at").defaultNow()
+  createdAt: timestamp("created_at").defaultNow().notNull()
 })
 
 // Store as JSON arrays — efficient for bulk reads, no joins needed

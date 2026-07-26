@@ -1,12 +1,10 @@
 "use client"
 
-import { detectMeasurementSystem, formatDistance, formatElevation, MeasurementSystem } from "@/lib/utils/unitformatter"
 import { ActivityCardType } from "@repo/types"
 import Image from "next/image"
-import { useEffect, useState } from "react"
 import StaticMapWrapper from "./map/StaticMapWrapper"
 import { PreferencesType } from "@repo/types"
-import { metersToDistance, metersToElevation } from "@repo/units"
+import { metersToDistance, metersToElevation, formatDateAndTime } from "@repo/units"
 
 
 type ActivityProp = {
@@ -14,17 +12,8 @@ type ActivityProp = {
   userPreferences: PreferencesType,
 }
 
-// export function useMeasurementSystem() {
-//   const [system, setSystem] = useState<MeasurementSystem>("metric")
-//   useEffect(() => {
-//     setSystem(detectMeasurementSystem())
-//   }, [])
-
-//   return system;
-// }
 
 export default function ActivityCard({ activities, userPreferences }: ActivityProp) {
-  // const system = useMeasurementSystem()
 
   let elev = { name: "", value: 0 }
   if (activities.elevationGain > activities.elevationLoss) {
@@ -33,7 +22,8 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
     elev = { name: "Elev Loss", value: activities.elevationLoss }
   }
 
-  // TODO: unitformatter is temp file, please change it to @repo/units with db preference
+  const { date: formattedDate, time: formattedTime } = formatDateAndTime(activities.createdAt, userPreferences?.timeFormat);
+
   const stats: { name: string, value: string }[] = [{
     name: "Distance",
     value: metersToDistance(activities.distance, userPreferences?.distanceUnit)
@@ -55,8 +45,8 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
           alt="Profile"
           className="mr-3 mt-3 w-12 rounded-full" />
         <div className="mt-3 h-0 flex flex-col justify-start">
-          <h3 className="mb-0 text-lg/tight font-semibold">UserName</h3>
-          <p className="mt-0 text-sm/tight">time and date</p>
+          <h3 className="mb-0 text-lg/tight font-semibold">{activities.userName}</h3>
+          <p className="mt-0 text-sm/tight">{formattedDate} at {formattedTime}</p>
           <p className="mt-0 text-sm/tight">location</p>
         </div>
       </div>
