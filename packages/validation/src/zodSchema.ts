@@ -22,5 +22,11 @@ export const MetaDataSchema = z.object({
   elevUnitLoss: z.enum(["meters", "feet"]),
 })
 
+export const UploadFileSchema = z.object({
+  title: z.string().min(1).max(100),
+  description: z.string().max(1000),
+  file: z.file(),
+})
+
 export type CreateActivityCardType = z.infer<typeof CreateActivitySchema>
 export type MetaDataType = z.infer<typeof MetaDataSchema>

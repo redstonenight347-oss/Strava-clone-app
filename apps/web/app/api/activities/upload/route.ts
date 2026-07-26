@@ -9,6 +9,7 @@ import {
   buildStreams
 } from "@repo/gpx"
 import { CreateActivityFromGpx, CreateActivityStreams } from "@repo/db"
+import { UploadFileSchema } from "@repo/validation"
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,7 +19,17 @@ export async function POST(req: NextRequest) {
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     const formData = await req.formData()
-    const file = formData.get("file") as File | null
+
+    const safeData = UploadFileSchema.safeParse({
+      title: formData.get("title"),
+      description: formData.get("description"),
+      file: formData.get("file"),
+    })
+    if(!safeData.success) {
+      return NextResponse.json({ error: "Data is corrupted" }, { status: 400 })
+    }
+
+    const { title, description, file } = safeData.data
     if (!file || !file.name.endsWith(".gpx")) {
       return NextResponse.json({ error: "A valild .gpx file is requried" }, { status: 400 })
     }
@@ -38,7 +49,8 @@ export async function POST(req: NextRequest) {
     const activity = await CreateActivityFromGpx({
       userId: session.user.id,
       type: "Run", // or detect from GPX <type> tag
-      title: file.name.replace(".gpx", ""),
+      title: title,
+      description: description,
       distance: stats.totalDistanceMeters,
       duration: stats.totalDurationSeconds,
       elevationGain: stats.elevationGainMeters,

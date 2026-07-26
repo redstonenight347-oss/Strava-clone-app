@@ -53,6 +53,7 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
 
 
       <h1 className="mt-4 text-2xl font-semibold">{activities.title ?? "Untitled Activity"}</h1>
+      <p className="mt-2 text-lg font-light">{activities.description ?? ""}</p>
       <div className="mt-2 flex gap-8">
         {
           stats.map((s) => {
