@@ -1,6 +1,6 @@
 export type ActivityCardType = {
     userName: string,
-    activityId: number,
+    activityId: string,
     userId: string | null,
     type: string,
     title: string | null,

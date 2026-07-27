@@ -43,6 +43,18 @@ export async function getActivitiesByUser(userId: any, limit = 5, offset = 0) {
   return UserActivities
 }
 
+export async function getActivityDetails(activityId: string) {
+  const activity = await db.query.activities.findFirst({
+    where: eq(activities.activityId, activityId),
+    with: {
+      streams: true,
+      user: true,
+    },
+  })
+
+  return activity
+}
+
 export async function CreateActivity(data: CreateActivityInput) {
   const res = await db
     .insert(activities)

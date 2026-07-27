@@ -1,4 +1,5 @@
-import { pgTable, text, serial, timestamp, integer, boolean, real, jsonb, pgEnum } from "drizzle-orm/pg-core"
+import { relations } from "drizzle-orm"
+import { pgTable, text, uuid, timestamp, integer, boolean, real, jsonb, pgEnum } from "drizzle-orm/pg-core"
 
 
 export const theme = pgEnum("theme", ["system", "dark", "light"])
@@ -13,10 +14,10 @@ export const timeFormat = pgEnum("time_format", ["12h", "24h"])
 
 
 export const activities = pgTable("activities", {
-  activityId: serial("activity_id").primaryKey(),
+  activityId: uuid("activity_id").defaultRandom().primaryKey(),
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
   type: text("type").notNull(),
-  title: text("title"),
+  title: text("title").notNull(),
   description: text("description"),
   location: text("location"),
   distance: integer("distance").notNull(),
@@ -32,8 +33,8 @@ export const activities = pgTable("activities", {
 
 // Store as JSON arrays — efficient for bulk reads, no joins needed
 export const activityStreams = pgTable("activity_streams", {
-  id: serial("id").primaryKey(),
-  activityId: integer("activity_id").notNull().references(() => activities.activityId, { onDelete: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  activityId: uuid("activity_id").notNull().references(() => activities.activityId, { onDelete: "cascade" }),
   timeData: jsonb("time_data").notNull().$type<number[]>(),
   distanceData: jsonb("distance_data").notNull().$type<number[]>(),
   altitudeData: jsonb("altitude_data").notNull().$type<number[]>(),
@@ -101,3 +102,35 @@ export const verification = pgTable("verification", {
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),
 })
+
+
+export const activitiesRelations = relations(activities, ({ one, many }) => ({
+  streams: many(activityStreams),
+
+  user: one(user, {
+    fields: [activities.userId],
+    references: [user.id],
+  }),
+}))
+
+export const activityStreamsRelations = relations(activityStreams, ({ one }) => ({
+  activity: one(activities, {
+    fields: [activityStreams.activityId],
+    references: [activities.activityId],
+  }),
+}))
+
+export const userPreferencesRelations = relations(userPreferences, ({ one }) => ({
+  user: one(user, {
+    fields: [userPreferences.userId],
+    references: [user.id],
+  }),
+}))
+
+export const userRelations = relations(user, ({ many, one }) => ({
+  activities: many(activities),
+  preferences: one(userPreferences, {
+    fields: [user.id],
+    references: [userPreferences.userId],
+  }),
+}))

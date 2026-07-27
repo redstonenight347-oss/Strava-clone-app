@@ -5,6 +5,7 @@ import Image from "next/image"
 import StaticMapWrapper from "./map/StaticMapWrapper"
 import { PreferencesType } from "@repo/types"
 import { metersToDistance, metersToElevation, formatDateAndTime } from "@repo/units"
+import { useRouter } from "next/navigation"
 
 
 type ActivityProp = {
@@ -14,6 +15,8 @@ type ActivityProp = {
 
 
 export default function ActivityCard({ activities, userPreferences }: ActivityProp) {
+
+  const router = useRouter()
 
   let elev = { name: "", value: 0 }
   if (activities.elevationGain > activities.elevationLoss) {
@@ -35,6 +38,10 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
     value: metersToElevation(elev.value, userPreferences.elevationUnit)
   }]
 
+  const clickHandler = () => {
+    router.push(`/activities/${activities.activityId}`)
+  }
+
   return (
     <div className="mt-8 p-4 m-auto w-[90%] md:w-[60%] lg:w-[35%] bg-amber-200 rounded-md">
       <div className="flex justify-start">
@@ -43,16 +50,19 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
           height={48}
           src="/temphoto.png"
           alt="Profile"
-          className="mr-3 mt-3 w-12 rounded-full" />
+          className="mr-3 mt-3 w-12 rounded-full cursor-pointer"
+          onClick={clickHandler} />
         <div className="mt-3 h-0 flex flex-col justify-start">
-          <h3 className="mb-0 text-lg/tight font-semibold">{activities.userName}</h3>
+          <h3 className="mb-0 text-lg/tight font-semibold cursor-pointer"
+            onClick={clickHandler}>{activities.userName}</h3>
           <p className="mt-0 text-sm/tight">{formattedDate} at {formattedTime}</p>
           <p className="mt-0 text-sm/tight">location</p>
         </div>
       </div>
 
 
-      <h1 className="mt-4 text-2xl font-semibold">{activities.title ?? "Untitled Activity"}</h1>
+      <h1 className="mt-4 text-2xl font-semibold cursor-pointer"
+        onClick={clickHandler}>{activities.title ?? "Untitled Activity"}</h1>
       <p className="mt-2 text-lg font-light">{activities.description ?? ""}</p>
       <div className="mt-2 flex gap-8">
         {
@@ -70,7 +80,8 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
 
 
       {activities.encodedPolyline ? (
-        <div className="mt-4 w-full h-80 bg-amber-50 rounded-md overflow-hidden pointer-events-none">
+        <div className="mt-4 w-full h-80 bg-amber-50 rounded-md overflow-hidden  cursor-pointer"
+          onClick={clickHandler}>
           <StaticMapWrapper encodedPolyline={activities.encodedPolyline} />
         </div>
       ) : (

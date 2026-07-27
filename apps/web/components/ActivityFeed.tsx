@@ -5,16 +5,34 @@ import { useEffect, useRef, useState } from "react"
 import type { PreferencesType } from "@repo/types"
 import ActivityCard from "./ActivityCard"
 
-export default function ActivityFeed({ initialActivities, userPreferences, userId }: { 
+export default function ActivityFeed({ initialActivities, userPreferences, userId }: {
   initialActivities: ActivityCardType[],
   userPreferences: PreferencesType,
-  userId: string | undefined }) {
-  
+  userId: string | undefined
+}) {
+
   const [activities, setActivities] = useState(initialActivities)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(false)
   const sentinelRef = useRef<HTMLDivElement>(null)
+
+
+  async function fetchMore() {
+    setLoading(true)
+    const res = await fetch(`/api/activities?userId=${userId}&page=${page}&limit=5`)
+    const data: ActivityCardType[] = await res.json()
+
+    if (data.length === 0) {
+      setHasMore(false)
+    }
+    else {
+      setActivities((prev) => [...prev, ...data])
+      setPage((prev) => prev + 1)
+    }
+    setLoading(false)
+  }
+
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -33,21 +51,6 @@ export default function ActivityFeed({ initialActivities, userPreferences, userI
   }, [page, hasMore, loading])
 
 
-  async function fetchMore() {
-    setLoading(true)
-    const res = await fetch(`/api/activities?userId=${userId}&page=${page}&limit=5`)
-    const data: ActivityCardType[] = await res.json()
-
-    if (data.length === 0) {
-      setHasMore(false)
-    }
-    else {
-      setActivities((prev) => [...prev, ...data])
-      setPage((prev) => prev + 1)
-    }
-    setLoading(false)
-  }
-
   return (
     <div>
       {activities.map((a) => (
@@ -58,7 +61,7 @@ export default function ActivityFeed({ initialActivities, userPreferences, userI
       <div ref={sentinelRef} className="h-1" />
 
       {loading && <p>Loading more activities</p>}
-      {!hasMore && <p>You've seen all activities</p>}
+      {!hasMore && <p>You&apos;ve seen all activities</p>}
     </div>
   )
 }

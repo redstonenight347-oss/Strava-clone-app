@@ -20,11 +20,12 @@ CREATE TABLE "account" (
 );
 --> statement-breakpoint
 CREATE TABLE "activities" (
-	"activity_id" serial PRIMARY KEY NOT NULL,
+	"activity_id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" text NOT NULL,
 	"type" text NOT NULL,
-	"title" text,
+	"title" text NOT NULL,
 	"description" text,
+	"location" text,
 	"distance" integer NOT NULL,
 	"duration" integer NOT NULL,
 	"encoded_polyline" text,
@@ -33,12 +34,12 @@ CREATE TABLE "activities" (
 	"elevation_loss" integer NOT NULL,
 	"start_time" timestamp,
 	"end_time" timestamp,
-	"created_at" timestamp DEFAULT now()
+	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "activity_streams" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"activity_id" integer NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"activity_id" uuid NOT NULL,
 	"time_data" jsonb NOT NULL,
 	"distance_data" jsonb NOT NULL,
 	"altitude_data" jsonb NOT NULL,
