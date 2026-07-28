@@ -1,7 +1,7 @@
 "use client"
 
 import { ActivityCardType } from "@repo/types"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import type { PreferencesType } from "@repo/types"
 import ActivityCard from "./ActivityCard"
 
@@ -18,7 +18,7 @@ export default function ActivityFeed({ initialActivities, userPreferences, userI
   const sentinelRef = useRef<HTMLDivElement>(null)
 
 
-  async function fetchMore() {
+  const fetchMore = useCallback(async () => {
     setLoading(true)
     const res = await fetch(`/api/activities?userId=${userId}&page=${page}&limit=5`)
     const data: ActivityCardType[] = await res.json()
@@ -31,7 +31,7 @@ export default function ActivityFeed({ initialActivities, userPreferences, userI
       setPage((prev) => prev + 1)
     }
     setLoading(false)
-  }
+  }, [userId, page])
 
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function ActivityFeed({ initialActivities, userPreferences, userI
     }
 
     return () => observer.disconnect()
-  }, [page, hasMore, loading])
+  }, [fetchMore, hasMore, loading])
 
 
   return (

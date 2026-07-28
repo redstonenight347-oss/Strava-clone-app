@@ -70,6 +70,6 @@ export async function POST(req: NextRequest) {
     return Response.json({ activityId: activity.activityId }, { status: 201 })
   }
   catch (err) {
-    return Response.json({ error: "Internal server error" }, { status: 500 })
+    return Response.json({ error: "Internal server error", detailedError: err }, { status: 500 })
   }
 }

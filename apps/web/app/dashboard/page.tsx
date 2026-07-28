@@ -1,4 +1,4 @@
-import ActivityFeed from "@/components/ActivityFeed"  
+import ActivityFeed from "@/components/ActivityFeed"
 import { auth } from "@/lib/auth"
 import { createUserPreferences, getActivitiesByUser, getUserPreferences } from "@repo/db"
 import { headers } from "next/headers"
@@ -10,36 +10,29 @@ export default async function Dashboard() {
   const session = await auth.api.getSession({
     headers: await headers()
   })
-  if(!session) {
+  if (!session) {
     redirect("/auth")
   }
 
   const userId = session?.user.id
 
-  try {
-    const initialActivities = await getActivitiesByUser(session?.user.id, 5, 0)
-    let [userPreferences] = await getUserPreferences(session?.user.id)
+  const initialActivities = await getActivitiesByUser(session?.user.id, 5, 0)
+  let [userPreferences] = await getUserPreferences(session?.user.id)
 
-    if(!userPreferences) {
-      [userPreferences] = await createUserPreferences(session.user.id)
-    }
+  if (!userPreferences) {
+    [userPreferences] = await createUserPreferences(session.user.id)
+  }
 
-    return (
-      <div>
-        <div className="flex justify-end">
-          <Link
+  return (
+    <div>
+      <div className="flex justify-end">
+        <Link
           href={"/upload"}
           className="m-4 px-6 py-4 bg-stravaorange text-white text-xl rounded-xl"
-          >Upload Activitiy</Link>
-        </div>
-        <ActivityFeed initialActivities={initialActivities} userPreferences={userPreferences} userId={userId} />
+        >Upload Activitiy</Link>
       </div>
-
-    )
-  }
-  catch (err) {
-    console.log(err)
-  }
-
+      {initialActivities ? <ActivityFeed initialActivities={initialActivities} userPreferences={userPreferences} userId={userId} /> : <div>Something went wrong. Try again later</div>}
+    </div>
+  )
 }
 

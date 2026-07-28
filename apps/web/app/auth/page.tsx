@@ -56,8 +56,8 @@ export default function AuthPage() {
         provider: "google",
         callbackURL: callbackUrl,
       })
-    } catch (err: any) {
-      setError(err.message ?? "Google OAuth Sign-In failed")
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Google OAuth Sign-In failed")
     } finally {
       setLoading(false)
     }

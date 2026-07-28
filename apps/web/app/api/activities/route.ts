@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from "next/server"
 import { CreateActivitySchema, MetaDataSchema } from "@repo/validation"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
-import { distanceToMeters, durationToSeconds, elevationToMeters, toTimestamp } from "@repo/units"
+import { distanceToMeters, durationToSeconds, elevationToMeters } from "@repo/units"
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = req.nextUrl
-    const userId: any = searchParams.get("userId")
+    const userId: string | null = searchParams.get("userId")
     if (!userId) {
       return NextResponse.json({ error: "Missing userId" }, { status: 400 })
     }
