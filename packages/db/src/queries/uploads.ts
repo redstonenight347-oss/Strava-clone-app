@@ -19,7 +19,7 @@ type CreateActivityFromGpxInput = {
 }
 
 type CreateActivityStreamsInput = {
-  activityId: number,
+  activityId: string,
   streams: ActivityStreams,
 }
 

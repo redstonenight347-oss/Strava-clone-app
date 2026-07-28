@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     const MetaDataSuccess = MetaDataSchema.safeParse(metaData)
 
     if (!DataSuccess.success || !MetaDataSuccess.success) {
-      return NextResponse.json({ error: "Invalid Input" }, { status: 400 })
+      return NextResponse.json({ error: "Invalid Input", DetailedError: DataSuccess.error }, { status: 400 })
     }
 
     const dbPayload = {
@@ -54,8 +54,8 @@ export async function POST(req: NextRequest) {
       description: DataSuccess.data.description,
       distance: distanceToMeters(DataSuccess.data.distance, MetaDataSuccess.data.distanceUnit),
       duration: durationToSeconds(DataSuccess.data.duration),
-      elevationGain: elevationToMeters(DataSuccess.data.elevGain, MetaDataSuccess.data.elevUnitGain),
-      elevationLoss: elevationToMeters(DataSuccess.data.elevLoss, MetaDataSuccess.data.elevUnitLoss),
+      elevationGain: elevationToMeters(DataSuccess.data.elevationGain, MetaDataSuccess.data.elevUnitGain),
+      elevationLoss: elevationToMeters(DataSuccess.data.elevationLoss, MetaDataSuccess.data.elevUnitLoss),
       startTime: DataSuccess.data.startTime ? new Date(DataSuccess.data.startTime) : undefined,
       endTime: DataSuccess.data.endTime ? new Date(DataSuccess.data.endTime) : undefined,
     }

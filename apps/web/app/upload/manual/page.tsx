@@ -29,11 +29,11 @@ export default function Manual() {
   // const [selectedTags, setSelectedTags] = useState<string[]>([])
 
   const [metaData, setMetaData] = useState<{
-    distanceUnit: "kilometers" | "miles"
+    distanceUnit: "metric" | "imperial"
     elevUnitGain: "meters" | "feet"
     elevUnitLoss: "meters" | "feet"
   }>({
-    distanceUnit: "kilometers",
+    distanceUnit: "metric",
     elevUnitGain: "meters",
     elevUnitLoss: "meters",
   })
@@ -99,8 +99,8 @@ export default function Manual() {
                 onChange={e => updateMetaData("distanceUnit", e.target.value)}
                 className="h-full px-2 pr-1 text-sm bg-white outline-none cursor-pointer"
               >
-                <option value="kilometers">kilometers</option>
-                <option value="miles">miles</option>
+                <option value="metric">kilometers</option>
+                <option value="imperial">miles</option>
               </select>
             </div>
           </div>
