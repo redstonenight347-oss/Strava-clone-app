@@ -8,6 +8,10 @@ export const distanceUnit = pgEnum("distance_unit", ["metric", "imperial"])
 
 export const elevationUnit = pgEnum("elevation_unit", ["meters", "feet"])
 
+export const paceUnit = pgEnum("pace_unit", ["min/km", "min/mi"])
+
+export const speedUnit = pgEnum("speed_unit", ["km/h", "mph", "m/s"])
+
 export const weightUnit = pgEnum("weight_unit", ["kg", "lb"])
 
 export const timeFormat = pgEnum("time_format", ["12h", "24h"])
@@ -48,6 +52,8 @@ export const userPreferences = pgTable("user_preferences", {
   theme: theme("theme").default("system").notNull(),
   distanceUnit: distanceUnit("distance_unit").default("metric").notNull(),
   elevationUnit: elevationUnit("elevation_unit").default("meters").notNull(),
+  paceUnit: paceUnit("pace_unit").default("min/km").notNull(),
+  speedUnit: speedUnit("speed_unit").default("km/h").notNull(),
   weightUnit: weightUnit("weight_unit").default("kg").notNull(),
   timeFormat: timeFormat("time_format").default("24h").notNull(),
   updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()),

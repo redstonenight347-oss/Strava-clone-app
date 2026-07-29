@@ -6,8 +6,8 @@ export function computePace(durationSec: number, distanceMeters: number, unit: P
   const minutes = durationSec / 60
 
   switch (unit) {
-    case "min/km": return minutes / (distanceMeters / 1000)
-    case "min/mi": return minutes / (distanceMeters / 1609.344)
+    case "min/km": return Number((minutes / (distanceMeters / 1000)).toFixed(2))
+    case "min/mi": return Number((minutes / (distanceMeters / 1609.344)).toFixed(2))
   }
 }
 

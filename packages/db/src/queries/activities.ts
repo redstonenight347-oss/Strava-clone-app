@@ -48,7 +48,11 @@ export async function getActivityDetails(activityId: string) {
     where: eq(activities.activityId, activityId),
     with: {
       streams: true,
-      user: true,
+      user: {
+        with: {
+          preferences: true,
+        },
+      },
     },
   })
 

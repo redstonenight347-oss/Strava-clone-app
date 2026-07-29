@@ -17,10 +17,10 @@ export default async function Dashboard() {
   const userId = session?.user.id
 
   const initialActivities = await getActivitiesByUser(session?.user.id, 5, 0)
-  let [userPreferences] = await getUserPreferences(session?.user.id)
+  let userPreferences = await getUserPreferences(session?.user.id)
 
   if (!userPreferences) {
-    [userPreferences] = await createUserPreferences(session.user.id)
+    userPreferences = await createUserPreferences(session.user.id)
   }
 
   return (

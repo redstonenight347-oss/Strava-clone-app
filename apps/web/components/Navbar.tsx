@@ -1,4 +1,5 @@
 "use client"
+
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
@@ -18,7 +19,7 @@ export default function Navbar() {
   const showJoinBtn = showPathName.includes(pathname)
 
   return (
-    <nav className="px-4 w-full h-16 bg-amber-100 flex items-center justify-between lg:px-6 sticky top-0 z-50">
+    <nav className="px-4 w-full h-16 bg-amber-100 flex items-center justify-between lg:px-6 sticky top-0 z-999">
       <div className="flex items-center">
         <button
           className="pr-4 text-4xl cursor-pointer lg:hidden text-black"

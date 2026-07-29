@@ -4,7 +4,7 @@ import { preferencesType, userPreferences } from "../schema"
 
 
 export async function createUserPreferences(userId: string) {
-  const preferences = await db 
+  const [preferences] = await db 
     .insert(userPreferences)
     .values({
       userId: userId,
@@ -16,7 +16,7 @@ export async function createUserPreferences(userId: string) {
 
 
 export async function getUserPreferences(userId: string) {
-  const preferences = await db
+  const [preferences] = await db
     .select({
       userId: userPreferences.userId,
       theme: userPreferences.theme, 

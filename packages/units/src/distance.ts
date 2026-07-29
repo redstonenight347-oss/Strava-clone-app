@@ -9,7 +9,7 @@ export function distanceToMeters(value: number, unit: DistanceUnit): number {
 
 export function metersToDistance(meters: number, unit: DistanceUnit): string {
   switch (unit) {
-    case "metric": return (meters / 1000).toFixed(2).concat(" km")
-    case "imperial": return (meters / 1609.344).toFixed(2).concat(" mi")
+    case "metric": return (meters / 1000).toFixed(2)
+    case "imperial": return (meters / 1609.344).toFixed(2)
   }
 }
