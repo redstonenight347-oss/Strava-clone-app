@@ -4,7 +4,7 @@ import { ActivityCardType } from "@repo/types"
 import Image from "next/image"
 import StaticMapWrapper from "./map/StaticMapWrapper"
 import { PreferencesType } from "@repo/types"
-import { metersToDistance, metersToElevation, formatDateAndTime } from "@repo/units"
+import { metersToDistance, metersToElevation, formatDateAndTime, formatDurationShort } from "@repo/units"
 import { useRouter } from "next/navigation"
 
 
@@ -32,7 +32,7 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
     value: metersToDistance(activities.distance, userPreferences?.distanceUnit)
   }, {
     name: "Time",
-    value: activities.duration.toString()
+    value: formatDurationShort(activities.duration)
   }, {
     name: elev.name,
     value: metersToElevation(elev.value, userPreferences.elevationUnit)
@@ -82,7 +82,7 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
       {activities.encodedPolyline ? (
         <div className="mt-4 w-full h-80 bg-amber-50 rounded-md overflow-hidden  cursor-pointer"
           onClick={clickHandler}>
-          <StaticMapWrapper encodedPolyline={activities.encodedPolyline} />
+          <StaticMapWrapper encodedPolyline={activities.encodedPolyline} isStatic={true} />
         </div>
       ) : (
         <div className="my-8 flex items-center justify-center border border-gray-400/20">

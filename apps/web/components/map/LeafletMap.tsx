@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect } from 'react'
-import { TileProvider } from './TileProvider'
-import { LayersControl, MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { TileLayers } from './TileLayers'
 
 
-export default function LeafletMap() {
+export default function LeafletMap({ isStatic }: { isStatic: boolean }) {
   useEffect(() => {
     const DefaultIcon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -27,54 +27,7 @@ export default function LeafletMap() {
       zoom={13}
       className='h-full w-full'
     >
-      <LayersControl position="topright">
-        {/* OpenStreetMap (Standard) */}
-
-        {/* CartoDB Voyager */}
-        <LayersControl.BaseLayer checked name={TileProvider.cartoVoyager.name}>
-          <TileLayer
-            url={TileProvider.cartoVoyager.url}
-          // attribution={TileProvider.cartoVoyager.attribution}
-          />
-        </LayersControl.BaseLayer>
-        {/* CartoDB Positron */}
-        <LayersControl.BaseLayer name={TileProvider.cartoPositron.name}>
-          <TileLayer
-            url={TileProvider.cartoPositron.url}
-          // attribution={TileProvider.cartoPositron.attribution}
-          />
-        </LayersControl.BaseLayer>
-        {/* CartoDB Dark Matter */}
-        <LayersControl.BaseLayer name={TileProvider.cartoDark.name}>
-          <TileLayer
-            url={TileProvider.cartoDark.url}
-          // attribution={TileProvider.cartoDark.attribution}
-          />
-        </LayersControl.BaseLayer>
-        {/* CyclOSM */}
-
-        {/* OpenTopoMap */}
-        <LayersControl.BaseLayer name={TileProvider.opentopo.name}>
-          <TileLayer
-            url={TileProvider.opentopo.url}
-          // attribution={TileProvider.opentopo.attribution}
-          />
-        </LayersControl.BaseLayer>
-        {/* Esri Satellite */}
-        <LayersControl.BaseLayer name={TileProvider.esriSatellite.name}>
-          <TileLayer
-            url={TileProvider.esriSatellite.url}
-          // attribution={TileProvider.esriSatellite.attribution}
-          />
-        </LayersControl.BaseLayer>
-        {/* Esri Gray */}
-        <LayersControl.BaseLayer name={TileProvider.esriGray.name}>
-          <TileLayer
-            url={TileProvider.esriGray.url}
-          // attribution={TileProvider.esriGray.attribution}
-          />
-        </LayersControl.BaseLayer>
-      </LayersControl>
+      <TileLayers isStatic={isStatic}/>
     </MapContainer>
   )
 }

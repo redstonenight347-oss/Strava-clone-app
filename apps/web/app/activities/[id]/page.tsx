@@ -1,3 +1,5 @@
+import MapClientWrapper from "@/components/map/MapClientWrapper"
+import StaticMapWrapper from "@/components/map/StaticMapWrapper"
 import { auth } from "@/lib/auth"
 import { getActivityDetails } from "@repo/db"
 import { computePace, formatDurationShort, metersToDistance, metersToElevation } from "@repo/units"
@@ -28,11 +30,7 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
   const duration = formatDurationShort(data.duration)
   const pace = computePace(data.duration, data.distance, "min/km")
 
-  let elapsedTime = "-"
-  if (data.startTime && data.endTime) {
-    const diffSeconds = Math.round((data.endTime.getTime() - data.startTime.getTime()) / 1000)
-    elapsedTime = formatDurationShort(diffSeconds)
-  }
+  const elapsedTime = duration
 
 
   return (
@@ -161,10 +159,13 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
               {/* Divider line */}
               <div className="border-t border-gray-200 my-6"></div>
 
+              {/* Map */}
+              {data.encodedPolyline && 
+              <div className="w-full h-100">
+                <StaticMapWrapper encodedPolyline={data.encodedPolyline} isStatic={false} />
+              </div>}
+
             </div>
-
-
-
           </div>
         </div>
       ) : (
