@@ -1,4 +1,4 @@
-import StaticMapWrapper from "@/components/map/StaticMapWrapper"
+import Map from "@/components/map/Map"
 import { auth } from "@/lib/auth"
 import { getActivityDetails } from "@repo/db"
 import { computePace, formatDurationShort, metersToDistance, metersToElevation } from "@repo/units"
@@ -175,7 +175,7 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
               {
                 data.encodedPolyline &&
                 <div className="w-full h-100">
-                  <StaticMapWrapper encodedPolyline={data.encodedPolyline} isStatic={false} isChangeable={true} />
+                  <Map encodedPolyline={data.encodedPolyline} isChangeable={true} />
                 </div>
               }
 
