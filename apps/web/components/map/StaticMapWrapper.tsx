@@ -13,8 +13,10 @@ const StaticRouteMap = dynamic(() => import('./StaticRouteMap'), {
 type Props = {
   encodedPolyline: string
   isStatic: boolean
+  isChangeable: boolean
 }
 
-export default function StaticMapWrapper({ encodedPolyline, isStatic }: Props) {
-  return <StaticRouteMap encodedPolyline={encodedPolyline} static={isStatic} />
+export default function StaticMapWrapper({ encodedPolyline, isStatic, 
+  isChangeable }: Props) {
+  return <StaticRouteMap encodedPolyline={encodedPolyline} isStatic={isStatic} isChangeable={isChangeable} />
 }

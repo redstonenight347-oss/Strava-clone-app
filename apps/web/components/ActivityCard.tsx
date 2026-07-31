@@ -82,7 +82,7 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
       {activities.encodedPolyline ? (
         <div className="mt-4 w-full h-80 bg-amber-50 rounded-md overflow-hidden  cursor-pointer"
           onClick={clickHandler}>
-          <StaticMapWrapper encodedPolyline={activities.encodedPolyline} isStatic={true} />
+          <StaticMapWrapper encodedPolyline={activities.encodedPolyline} isStatic={true} isChangeable={false} />
         </div>
       ) : (
         <div className="my-8 flex items-center justify-center border border-gray-400/20">

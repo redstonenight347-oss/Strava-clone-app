@@ -1,15 +1,15 @@
 'use client'
 
 import { useEffect } from 'react'
-import { MapContainer, TileLayer, Polyline, useMap } from 'react-leaflet'
+import { MapContainer, Polyline, useMap } from 'react-leaflet'
 import { decodePolyline } from '@repo/gpx'
-import { TileProvider } from './TileProvider'
 import L from 'leaflet'
 import { TileLayers } from './TileLayers'
 
 type StaticRouteMapProps = {
   encodedPolyline: string
-  static: boolean
+  isStatic: boolean
+  isChangeable: boolean
 }
 
 
@@ -26,7 +26,7 @@ function FitBounds({ positions }: { positions: L.LatLngTuple[] }) {
 }
 
 
-export default function StaticRouteMap({ encodedPolyline, static: isStatic }: StaticRouteMapProps) {
+export default function StaticRouteMap({ encodedPolyline, isStatic, isChangeable }: StaticRouteMapProps) {
   const positions: L.LatLngTuple[] = decodePolyline(encodedPolyline).map(
     (p) => [p.lat, p.lng]
   )
@@ -50,7 +50,7 @@ export default function StaticRouteMap({ encodedPolyline, static: isStatic }: St
       boxZoom={!isStatic}
       keyboard={!isStatic}
     >
-      <TileLayers isStatic={isStatic} />
+      <TileLayers isChangeable={isChangeable} />
 
       <Polyline
         positions={positions}

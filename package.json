@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter web dev",
+    "lint": "pnpm --filter web lint",
     "dbg": "pnpm --filter db dbg",
     "dbm": "pnpm --filter db dbm",
     "dbp": "pnpm --filter db dbp",

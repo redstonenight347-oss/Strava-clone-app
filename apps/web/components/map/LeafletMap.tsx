@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css'
 import { TileLayers } from './TileLayers'
 
 
-export default function LeafletMap({ isStatic }: { isStatic: boolean }) {
+export default function LeafletMap({ isChangeable }: { isChangeable: boolean }) {
   useEffect(() => {
     const DefaultIcon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -27,7 +27,7 @@ export default function LeafletMap({ isStatic }: { isStatic: boolean }) {
       zoom={13}
       className='h-full w-full'
     >
-      <TileLayers isStatic={isStatic}/>
+      <TileLayers isChangeable={isChangeable} />
     </MapContainer>
   )
 }

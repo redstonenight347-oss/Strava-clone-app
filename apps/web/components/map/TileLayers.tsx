@@ -2,12 +2,10 @@ import { LayersControl, TileLayer } from "react-leaflet";
 import { TileProvider } from "./TileProvider";
 
 
-export function TileLayers({ isStatic }: { isStatic: boolean }) {
+export function TileLayers({ isChangeable }: { isChangeable: boolean }) {
   return (
     <>
-      {isStatic ?
-        <TileLayer url={TileProvider.openstreetmap.url} />
-        :
+      {isChangeable ?
         <LayersControl position="topright">
           {/* OpenStreetMap (Standard) */}
 
@@ -56,6 +54,8 @@ export function TileLayers({ isStatic }: { isStatic: boolean }) {
             />
           </LayersControl.BaseLayer>
         </LayersControl>
+        :
+        <TileLayer url={TileProvider.openstreetmap.url} />
       }
     </>
   )

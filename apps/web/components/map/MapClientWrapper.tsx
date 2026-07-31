@@ -8,6 +8,6 @@ const LeafletMap = dynamic(() => import('./LeafletMap'),{
   }
 )
 
-export default function MapClientWrapper({ isStatic }: { isStatic: boolean }) {
-  return <LeafletMap isStatic={isStatic} />
+export default function MapClientWrapper({ isChangeable }: { isChangeable: boolean }) {
+  return <LeafletMap isChangeable={isChangeable} />
 }
