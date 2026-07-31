@@ -19,7 +19,7 @@ export default function Navbar() {
   const showJoinBtn = showPathName.includes(pathname)
 
   return (
-    <nav className="px-4 w-full h-16 bg-amber-100 flex items-center justify-between lg:px-6 sticky top-0 z-999">
+    <nav className="px-4 w-full h-16 bg-white border border-gray-200 shadow-sm flex items-center justify-between lg:px-6 sticky top-0 z-9999">
       <div className="flex items-center">
         <button
           className="pr-4 text-4xl cursor-pointer lg:hidden text-black"
@@ -46,7 +46,7 @@ export default function Navbar() {
       
       {
           isOpen && (
-            <div className="p-4 w-80 h-full flex items-start lg:hidden bg-orange-300 top-0 left-0 fixed">
+            <div className="p-4 w-80 h-full flex items-start lg:hidden bg-white border border-gray-200 shadow-sm top-0 left-0 fixed">
 
               <div className="flex">
                 <button

@@ -8,10 +8,10 @@ export function speedToMps(value: number, unit: SpeedUnit): number {
   }
 }
 
-export function mpsToSpeed(mps: number, unit: SpeedUnit): string {
+export function mpsToSpeed(mps: number, unit: SpeedUnit): number {
   switch (unit) {
-    case "km/h": return (mps * 3.6).toFixed(2).concat(" km/h")
-    case "mph":  return (mps * 2.23694).toFixed(2).concat(" mph")
-    case "m/s":  return mps.toFixed(2).concat(" m/s")
+    case "km/h": return Number((mps * 3.6).toFixed(2))
+    case "mph":  return Number((mps * 2.23694).toFixed(2))
+    case "m/s":  return Number(mps.toFixed(2))
   }
 }

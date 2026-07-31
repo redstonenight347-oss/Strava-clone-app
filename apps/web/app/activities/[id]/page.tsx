@@ -1,3 +1,4 @@
+import ActivityChartWrapper from "@/components/charts/ActivityChartWrapper"
 import Map from "@/components/map/Map"
 import { auth } from "@/lib/auth"
 import { getActivityDetails } from "@repo/db"
@@ -36,7 +37,7 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
   return (
     <div className="min-h-screen bg-white text-gray-900 pb-20">
       {data ? (
-        <div className="max-w-250 mx-auto mt-10 flex gap-8 px-4">
+        <div className="max-w-300 mx-auto mt-10 flex gap-8 px-4">
 
           {/* Left Sidebar Menu */}
           <div className="w-46 h-46 shrink-0 flex flex-col">
@@ -44,23 +45,23 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
               <Link
                 href={`/activities/${activityId}`}
                 className="border-l-4 border-orange-500 pl-4 py-2 text-sm font-bold text-gray-900">Overview
-                </Link>
+              </Link>
               <Link
                 href={`/activities/${activityId}/analysis`}
                 className="pl-5 py-3 text-sm text-gray-700 hover:text-gray-900 cursor-pointer">Analysis
-                </Link>
+              </Link>
 
               <div className="border-t border-gray-200 my-1"></div>
               <Link
                 href={`/activities/${activityId}/segments`}
                 className="pl-5 py-3 text-sm text-gray-700 hover:text-gray-900 cursor-pointer">Segments
-                </Link>
+              </Link>
 
               <div className="border-t border-gray-200 my-1"></div>
               <Link
                 href={`/activities/${activityId}/best-efforts`}
                 className="pl-5 py-3 text-sm text-gray-700 hover:text-gray-900 cursor-pointer">Best Efforts
-                </Link>
+              </Link>
             </div>
 
             {/* Bottom Actions */}
@@ -72,13 +73,13 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
                 <svg className="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 24 24"><path d="M6 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm6 0c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm6 0c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2z" /></svg>
               </button>
             </div>
-          </div >
+          </div>
 
           {/* Main Activity Details */}
-          < div className="flex-1 bg-white border border-gray-200 shadow-sm mb-10" >
+          <div className="flex-1 bg-white border border-gray-200 shadow-sm mb-10">
 
             {/* Header */}
-            < div className="flex justify-between items-center bg-[#f8f8f9] border-b border-gray-200 px-6 py-3" >
+            <div className="flex justify-between items-center bg-[#f8f8f9] border-b border-gray-200 px-6 py-3">
               <h1 className="text-xl text-gray-800"> {data.user.name} - {data.type}</h1>
               <div className="flex items-center  text-gray-500 border border-gray-300 rounded bg-white overflow-hidden h-7">
                 <button className="flex items-center gap-1.5 hover:bg-gray-50 px-3 py-1 border-r border-gray-300 h-full">
@@ -90,18 +91,18 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
                   <span className="text-xs font-semibold text-gray-700">0</span>
                 </button>
               </div>
-            </div >
+            </div>
 
             {/* Content Body */}
-            < div className="p-6" >
+            <div className="p-6">
 
               {/* Top Section (Info & Stats) */}
-              < div className="flex flex-col md:flex-row gap-6" >
+              <div className="flex flex-col md:flex-row gap-6">
 
                 {/* Left Info */}
-                < div className="flex-1 flex gap-4" >
+                <div className="flex-1 flex gap-4">
                   {/* Avatar/Graphic */}
-                  < div className="w-28 h-28 shrink-0 rounded-full overflow-hidden flex items-center justify-center border border-gray-200" >
+                  <div className="w-28 h-28 shrink-0 rounded-full overflow-hidden flex items-center justify-center border border-gray-200">
                     <Image
                       width={112}
                       height={112}
@@ -109,7 +110,7 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
                       src="/temphoto.png"
                       alt="Profile"
                     />
-                  </div >
+                  </div>
 
                   <div>
                     <div className="text-[13px] text-gray-500 mb-1">
@@ -120,10 +121,10 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
                       Add a description
                     </button>
                   </div>
-                </div >
+                </div>
 
                 {/* Right Stats */}
-                < div className="w-80 shrink-0" >
+                <div className="w-80 shrink-0">
                   <div className="flex justify-between mb-4">
                     <div>
                       <div className="flex items-baseline gap-1">
@@ -165,11 +166,11 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
                   </div>
 
 
-                </div >
-              </div >
+                </div>
+              </div>
 
               {/* Divider line */}
-              < div className="border-t border-gray-200 my-6" ></div >
+              <div className="border-t border-gray-200 my-6"></div>
 
               {/* Map */}
               {
@@ -179,13 +180,30 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
                 </div>
               }
 
-            </div >
-          </div >
-        </div >
+            </div>
+
+            {/* Charts */}
+            <div className="flex-1 mx-6">
+              {data.streams && data.streams.length > 0 && (
+                <>
+                  <div className="border-t border-gray-200 my-6"></div>
+                  <ActivityChartWrapper
+                    distanceData={data.streams[0]!.distanceData}
+                    altitudeData={data.streams[0]!.altitudeData}
+                    speedData={data.streams[0]!.speedData}
+                    distanceUnit={data.user.preferences.distanceUnit}
+                    elevationUnit={data.user.preferences.elevationUnit}
+                    speedUnit={data.user.preferences.speedUnit}
+                  />
+                </>
+              )}
+            </div>
+          </div>
+        </div>
       ) : (
         <div className="flex items-center justify-center h-64 text-gray-500">no data</div>
       )
       }
-    </div >
+    </div>
   )
 }

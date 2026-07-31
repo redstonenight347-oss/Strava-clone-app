@@ -7,9 +7,9 @@ export function elevationToMeters(value: number, unit: ElevationUnit): number {
   }
 }
 
-export function metersToElevation(meters: number, unit: ElevationUnit): string {
+export function metersToElevation(meters: number, unit: ElevationUnit): number {
   switch (unit) {
-    case "meters": return Math.round(meters).toString().concat(" m")
-    case "feet":   return Math.round(meters / 0.3048).toString().concat(" ft")
+    case "meters": return Math.round(meters)
+    case "feet":   return Math.round(meters / 0.3048)
   }
 }
