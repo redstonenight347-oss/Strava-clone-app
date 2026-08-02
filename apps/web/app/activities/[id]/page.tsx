@@ -33,6 +33,7 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
 
   const elapsedTime = duration
 
+  const elevationUnit = data.user.preferences.elevationUnit === "meters" ? "m" : "ft"
 
   return (
     <div className="min-h-screen bg-white text-gray-900 pb-20">
@@ -149,11 +150,11 @@ export default async function Activity({ params }: { params: Promise<{ id: strin
                   <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-[13px] border-t border-gray-100 pt-3">
                     <div className="flex gap-2">
                       <span className="text-gray-500 w-24">Elevation Gain</span>
-                      <span className="font-semibold">{elevationGain}</span>
+                      <span className="font-semibold">{elevationGain}  {elevationUnit}</span>
                     </div>
                     <div className="flex gap-2">
                       <span className="text-gray-500 w-24">Elevation Loss</span>
-                      <span className="font-semibold">{elevationLoss}</span>
+                      <span className="font-semibold">{elevationLoss} {elevationUnit}</span>
                     </div>
                     <div className="flex gap-2">
                       <span className="text-gray-500 w-16">Calories</span>

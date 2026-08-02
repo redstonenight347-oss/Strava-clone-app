@@ -27,15 +27,18 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
 
   const { date: formattedDate, time: formattedTime } = formatDateAndTime(activities.createdAt, userPreferences?.timeFormat);
 
-  const stats: { name: string, value: string }[] = [{
+  const stats: { name: string, value: number | string, unit: string }[] = [{
     name: "Distance",
-    value: metersToDistance(activities.distance, userPreferences?.distanceUnit)
+    value: metersToDistance(activities.distance, userPreferences?.distanceUnit),
+    unit: userPreferences.distanceUnit === "metric" ? "km" : "M",
   }, {
     name: "Time",
-    value: formatDurationShort(activities.duration)
+    value: formatDurationShort(activities.duration),
+    unit: "",
   }, {
     name: elev.name,
-    value: metersToElevation(elev.value, userPreferences.elevationUnit)
+    value: metersToElevation(elev.value, userPreferences.elevationUnit),
+    unit: userPreferences.elevationUnit === "meters" ? "m" : "ft",
   }]
 
   const clickHandler = () => {
@@ -70,7 +73,7 @@ export default function ActivityCard({ activities, userPreferences }: ActivityPr
             return (
               <div key={s.value}>
                 <p>{s.name}</p>
-                <h2 className="text-2xl font-semibold">{s.value}</h2>
+                <h2 className="text-2xl font-semibold">{s.value}{s.unit.padStart(3)}</h2>
               </div>
             )
           })

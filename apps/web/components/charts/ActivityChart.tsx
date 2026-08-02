@@ -16,6 +16,7 @@ type ChartPoint = {
   distance: number
   altitude: number
   speed: number
+  grade: number
 }
 
 function buildChartData(
@@ -30,26 +31,46 @@ function buildChartData(
   // Downsample to ~500 points max for performance
   const step = Math.max(1, Math.floor(len / 500))
   const points: ChartPoint[] = []
+
+  let prevAlt: number | null = null
+  let prevDist: number | null = null
+
   for (let i = 0; i < len; i += step) {
+    const dist = metersToDistance(distanceData[i]!, distanceUnit)
+    const alt = metersToElevation(altitudeData[i]!, elevationUnit)
+    const spd = speedToMps(speedData[i]!, speedUnit)
+
+    // Grade: (vertical change / horizontal distance) × 100
+    // Both deltas use raw meter values for accuracy
+    let grade = 0
+    if (prevAlt !== null && prevDist !== null) {
+      const dAlt = altitudeData[i]! - altitudeData[i - step]!   // meters
+      const dDist = distanceData[i]! - distanceData[i - step]!  // meters
+      if (dDist !== 0) {
+        grade = (dAlt / dDist) * 100
+      }
+    }
+    prevAlt = altitudeData[i]!
+    prevDist = distanceData[i]!
+
     points.push({
-      distance: metersToDistance(distanceData[i]!, distanceUnit),
-      altitude: metersToElevation(altitudeData[i]!, elevationUnit),
-      speed: speedToMps(speedData[i]!, speedUnit),
+      distance: dist,
+      altitude: alt,
+      speed: spd,
+      grade: parseFloat(grade.toFixed(1)),
     })
   }
   return points
 }
 
-function ChartTooltip({ active, payload, label, distLabel, valueLabel, valueUnit, color }: any) {
+function ChartTooltip({ active, payload, distLabel, elevLabel }: any) {
   if (!active || !payload?.length) return null
+  const point = payload[0].payload as ChartPoint
   return (
-    <div className="bg-white border border-gray-200 shadow-md rounded px-3 py-2 text-xs">
-      <p className="text-gray-500 mb-1">
-        {distLabel}: <span className="font-semibold text-gray-800">{label}</span>
-      </p>
-      <p style={{ color }}>
-        {valueLabel}: <span className="font-semibold">{payload[0].value} {valueUnit}</span>
-      </p>
+    <div className="bg-white border border-gray-200 shadow-md rounded px-3 py-2 text-xs text-gray-600 space-y-0.5">
+      <p>Dist: <span className="font-semibold text-gray-800">{point.distance}</span> {distLabel}</p>
+      <p>Elev: <span className="font-semibold text-gray-800">{point.altitude}</span> {elevLabel}</p>
+      <p>Grade: <span className="font-semibold text-gray-800">{point.grade}</span> %</p>
     </div>
   )
 }
@@ -84,6 +105,14 @@ export default function ActivityChart({ distanceData, altitudeData, speedData, d
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
             <XAxis
               dataKey="distance"
+              type="number"
+              domain={[0, "dataMax"]}
+              ticks={(() => {
+                const max = data[data.length - 1]?.distance ?? 0
+                const count = Math.ceil(max)
+                return Array.from({ length: count }, (_, i) => i + 1)
+              })()}
+              tickFormatter={(v: number) => `${v}`}
               tick={{ fontSize: 11, fill: "#9ca3af" }}
               tickLine={false}
               axisLine={{ stroke: "#e5e7eb" }}
@@ -98,10 +127,8 @@ export default function ActivityChart({ distanceData, altitudeData, speedData, d
             <Tooltip
               content={
                 <ChartTooltip
-                  distLabel={`Distance (${distLabel})`}
-                  valueLabel="Elevation"
-                  valueUnit={elevLabel}
-                  color="#36a2eb"
+                  distLabel={distLabel}
+                  elevLabel={elevLabel}
                 />
               }
             />
@@ -139,10 +166,8 @@ export default function ActivityChart({ distanceData, altitudeData, speedData, d
             <Tooltip
               content={
                 <ChartTooltip
-                  distLabel={`Distance (${distLabel})`}
-                  valueLabel="Speed"
-                  valueUnit={speedUnit}
-                  color="#fc5200"
+                  distLabel={distLabel}
+                  elevLabel={elevLabel}
                 />
               }
             />
